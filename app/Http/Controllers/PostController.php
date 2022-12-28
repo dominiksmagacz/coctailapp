@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Input\Input;
 
 class PostController extends Controller
 {
@@ -44,8 +45,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
-       echo 'test';
+        $q = Input::class ( 'q' );
+        $post = Post::where('title','LIKE','%'.$q.'%')->get();
+        if(count($post) > 0)
+            return view('welcome')->withDetails($user)->withQuery ( $q );
+        else return view ('welcome')->withMessage('No Details found. Try to search again !');
     }
 
     /**
