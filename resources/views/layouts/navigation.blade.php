@@ -21,7 +21,7 @@
                     <x-nav-link :href="route('recipes.index')" :active="request()->routeIs('recipes.index')">
                         {{ __('Przepisy') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('shop.index')" :active="request()->routeIs('shop.index')">
+                    <x-nav-link :href="route('shops.index')" :active="request()->routeIs('shops.index')">
                         {{ __('Sklep') }}
                     </x-nav-link>
                 </div>
@@ -88,7 +88,7 @@
             <x-responsive-nav-link :href="route('recipes.index')" :active="request()->routeIs('recipes.index')">
                 {{ __('Przepisy') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('shop.index')" :active="request()->routeIs('shop.index')">
+            <x-responsive-nav-link :href="route('shops.index')" :active="request()->routeIs('shops.index')">
                 {{ __('Sklep') }}
             </x-responsive-nav-link>
         </div>

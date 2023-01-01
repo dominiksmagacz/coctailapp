@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Symfony\Component\Console\Input\Input;
+
+use function PHPUnit\Framework\isEmpty;
 
 class PostController extends Controller
 {
@@ -15,9 +16,9 @@ class PostController extends Controller
      */
     public function index()
     {
-       $posts = Post::get()->toQuery()->paginate(5);
-        
-        
+        $posts = Post::get()->toQuery()->paginate(5);
+
+
         return view('posts.index', compact('posts'));
 
 
@@ -34,7 +35,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -45,11 +46,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $q = Input::class ( 'q' );
-        $post = Post::where('title','LIKE','%'.$q.'%')->get();
-        if(count($post) > 0)
-            return view('welcome')->withDetails($user)->withQuery ( $q );
-        else return view ('welcome')->withMessage('No Details found. Try to search again !');
+        Post::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'image_path' => '',
+            'author_id' => auth()->id()
+        ]);
+    
+        return redirect()->route('posts.index')->with('message', 'Przepis został dodany.');;
+            //dd($request);
     }
 
     /**
@@ -73,7 +78,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('posts.edit', [
+            'post' => Post::where('id', $id)->first()
+            ]);
     }
 
     /**
@@ -85,7 +92,11 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //dd('test');
+
+        Post::where('id', $id)->update($request->except(['_token', '_method']));
+
+        return redirect(route('posts.index'))->with('message', 'Przepis został zmodyfikowany.');;
     }
 
     /**
@@ -96,6 +107,20 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::destroy($id);
+        return redirect(route('posts.index'))->with('message', 'Artykuł został usunięty.');
+    }
+
+
+    public function search(Request $request)
+    {
+      
+        $search = $request->input('searchInput');
+        $posts = Post::where('title', 'LIKE', '%' . $search . '%')->paginate(5);
+
+        if (count($posts) > 0)
+            return view('posts.index', compact('posts'));
+            else
+            return view('posts.index', compact('posts'))->with('success', 'your message,here');
     }
 }
