@@ -18,8 +18,10 @@ class PostController extends Controller
     {
         $posts = Post::get()->toQuery()->paginate(5);
 
+        $posts2 = Post::get()->toQuery()->paginate(5);
 
-        return view('posts.index', compact('posts'));
+
+        return view('posts.index', compact('posts', 'posts2'));
 
 
         // return view ('blog.index', [
@@ -117,10 +119,11 @@ class PostController extends Controller
       
         $search = $request->input('searchInput');
         $posts = Post::where('title', 'LIKE', '%' . $search . '%')->paginate(5);
+        $posts2 = $posts;
 
         if (count($posts) > 0)
-            return view('posts.index', compact('posts'));
+            return view('posts.index', compact('posts', 'posts2'));
             else
-            return view('posts.index', compact('posts'))->with('success', 'your message,here');
+            return view('posts.index', compact('posts', 'posts2'))->with('success', 'your message,here');
     }
 }
