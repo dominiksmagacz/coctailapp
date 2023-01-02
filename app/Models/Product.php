@@ -11,9 +11,10 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        'type_of_measure'
     ];
 
+    protected $table = 'products';
+    
     public function recipes()
     {
         return $this->belongsToMany(Recipe::class);

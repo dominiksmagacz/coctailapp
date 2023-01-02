@@ -17,7 +17,16 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->title(),
+            'name' => $this->faker->randomElement([
+                'Ananas',
+                'Banan',
+                'Pomarańcza',
+                'Jabłko',
+                'Marchewka',
+                'Pietruszka',
+                'Seler',
+                'Ziemniak',
+            ]),
             'type_of_measure' => $this->faker->title(),
         ];
     }

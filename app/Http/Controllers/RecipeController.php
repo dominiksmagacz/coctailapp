@@ -28,8 +28,8 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        return view('recipes.create');
-        
+        $products = Product::all();
+        return view('recipes.create', compact('products'));
     }
 
     /**
@@ -40,29 +40,16 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
-        Recipe::create([
+        // dd($request);
+        
+        $recipe = Recipe::create([
             'title' => $request->title,
             'description' => $request->description,
             'yt_link' => $request->yt_link,
             'image_path' => '',
             'author_id' => auth()->id()
     ]);
-
-        Product::create([
-            'name' => $request->name,
-            'type_of_measure' => $request->type_of_measure
-        ]);
-
-    //     $recipes = Recipe::all();
-    //     foreach ($request->recipes as $recipe_id => $products) {
-    //         $recipe = $recipes->find($recipe_id);
-    //     }
-    //     $sport->countries ()->attach ($medals) ;
-    // }
-
-    $recipe = Recipe::find(1);
-    $recipe->products()->attach(1);
-
+    $recipe->products()->sync($request->products);
 
     return redirect()->route('recipes.index')->with('message', 'Przepis został dodany.');;
     }
@@ -86,11 +73,17 @@ class RecipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Recipe $recipe, $id)
     {
-        return view('recipes.edit', [
-            'recipe' => Recipe::where('id', $id)->first()
-            ]);
+        $recipe = Recipe::find($id);
+        $products = Product::orderBy('name', 'ASC')->get();
+
+        $selectedProducts = [];
+        foreach($recipe->products as $product){
+            $selectedProducts[] = $product->id;
+        }
+// dd($recipe);
+        return view('recipes.edit', compact('recipe', 'products', 'selectedProducts'));
     }
 
     /**
@@ -100,11 +93,13 @@ class RecipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Recipe $recipe)
     {
-        //dd('test');
+        // dd($request);
+        $recipe->update($request->all());
+        // Recipe::where('id', $id)->update($request->except(['_token', '_method']));
+        $recipe->products()->sync($request->products);
 
-        Recipe::where('id', $id)->update($request->except(['_token', '_method']));
 
         return redirect(route('recipes.index'))->with('message', 'Przepis został zmodyfikowany.');;
     }

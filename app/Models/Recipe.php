@@ -18,6 +18,8 @@ class Recipe extends Model
         'yt_link'
     ];
 
+    protected $table = 'recipes';
+
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'author_id');

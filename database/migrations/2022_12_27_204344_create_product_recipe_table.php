@@ -14,11 +14,20 @@ return new class extends Migration
     public function up()
     {
         Schema::create('product_recipe', function (Blueprint $table) {
-            $table->unsignedBigInteger('recipe_id');
-            $table->unsignedBigInteger('product_id');
+            // $table->unsignedBigInteger('recipe_id');
+            // $table->unsignedBigInteger('product_id');
 
-            $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            // $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
+            // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignId('product_id')
+            ->references('id')
+            ->on('products')
+            ->onDelete('cascade');
+          $table->foreignId('recipe_id')
+            ->references('id')
+            ->on('recipes')
+            ->onDelete('cascade');
+
         });
     }
 

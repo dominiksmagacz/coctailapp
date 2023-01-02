@@ -81,7 +81,11 @@
                                                         {{ $recipe->description }}</td>
                                                     <td
                                                         class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                        {{ $recipe->user->name }}</td>
+                                                        @if (!$recipe->user==null)
+                                                            {{ $recipe->user->name }}</td>
+                                                        @else
+                                                            Konto usunięte
+                                                        @endif
                                                     <td class="px-3 py-4 text-sm text-gray-500">
                                                         @foreach ($recipe->products as $product)
                                                             <li>{{ $product->name }}</li>

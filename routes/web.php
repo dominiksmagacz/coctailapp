@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
@@ -23,6 +24,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::prefix('/admins')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admins.index');
+    Route::post('/store', [AdminController::class, 'store'])->name('admins.store');
+    Route::get('/{id}/show', [AdminController::class, 'show'])->name('admins.show');
+    Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('admins.edit');
+    Route::get('/create', [AdminController::class, 'create'])->name('admins.create');
+    Route::get('/search', [AdminController::class, 'search'])->name('admins.search');
+    Route::delete('/{id}', [AdminController::class, 'destroy'])->name('admins.destroy');
+    Route::put('/{id}', [AdminController::class, 'update'])->name('admins.update');
+});
+
 Route::prefix('/posts')->group(function () {
     Route::get('/', [PostController::class, 'index'])->name('posts.index');
     Route::post('/store', [PostController::class, 'store'])->name('posts.store');
@@ -31,7 +43,7 @@ Route::prefix('/posts')->group(function () {
     Route::get('/create', [PostController::class, 'create'])->name('posts.create');
     Route::get('/search', [PostController::class, 'search'])->name('posts.search');
     Route::delete('/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
-    Route::patch('/{id}', [PostController::class, 'update'])->name('posts.update');
+    Route::put('/{id}', [PostController::class, 'update'])->name('posts.update');
 });
 
 Route::prefix('/recipes')->group(function () {
@@ -42,7 +54,7 @@ Route::prefix('/recipes')->group(function () {
     Route::get('/search', [RecipeController::class, 'search'])->name('recipes.search');
     Route::get('/create', [RecipeController::class, 'create'])->name('recipes.create');
     Route::delete('/{id}', [RecipeController::class, 'destroy'])->name ('recipes.destroy');
-    Route::patch('/{id}', [RecipeController::class, 'update'])->name('recipes.update');
+    Route::put('/{id}', [RecipeController::class, 'update'])->name('recipes.update');
 });
 
 Route::get('/shops', [ShopController::class, 'index'])->name('shops.index');
@@ -62,6 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
 
 require __DIR__ . '/auth.php';

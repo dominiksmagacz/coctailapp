@@ -14,6 +14,12 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        Product::factory(30)->create();
+       // Product::factory(30)->create();
+       Product::create(['name' => 'Ziemniak']);
+       Product::create(['name' => 'Jabłko']);
+       Product::create(['name' => 'Pomarańcza']);
+       Product::create(['name' => 'Ananas']);
+       Product::create(['name' => 'Kiwi']);
+       Product::create(['name' => 'Marchewka']);
     }
 }
