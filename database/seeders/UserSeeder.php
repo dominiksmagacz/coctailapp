@@ -20,20 +20,25 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
         ]);
+        $user->assignRole('admin');
 
-        $user = User::create([
+
+        $user2 = User::create([
             'name' => 'Robert',
             'email' => 'robert.smagacz@gmail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
         ]);
+        $user2->assignRole('moderator');
 
-        $user = User::create([
+        $user3 = User::create([
             'name' => 'Kamil',
             'email' => 'kamil.smagacz@gmail.com',
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
         ]);
+        $user3->assignRole('reader');
+        
     }
     
 }

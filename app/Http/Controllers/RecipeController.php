@@ -15,7 +15,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::all()->toQuery()->paginate(5);
+        $recipes = Recipe::all()->toQuery()->paginate(10);
         $products = Product::all()->take(4);
         
         return view('recipes.index', compact('recipes','products'));

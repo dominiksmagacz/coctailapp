@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
     <div class="text-center ">
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Pozostałe artykuły</h2>
@@ -140,29 +140,36 @@
                                                     <td
                                                         class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                                         {{ $post->created_at }}</td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                                        <x-nav-link href="/posts/{{ $post->id }}/show"
-                                                            :active="request()->routeIs('posts.show')"> {{ $post->title }} </x-nav-link>
-                                                    </td>
+                                                    @if (Auth::user()->hasRole('reader'))
+                                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                            <x-nav-link href="/posts/{{ $post->id }}/show"
+                                                                :active="request()->routeIs('posts.show')"> {{ $post->title }} </x-nav-link>
+                                                        </td>
+                                                    @else
+                                                        <td class="px-3 py-4 text-sm text-gray-500">{{ $post->title }}
+                                                    @endif
                                                     <td class="px-3 py-4 text-sm text-gray-500">{{ $post->content }}
                                                     </td>
-                                                    <td
-                                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                        <a href="{{ route('posts.edit', $post->id) }}"
-                                                            class="text-indigo-600 hover:text-indigo-900">Edytuj<span
-                                                                class="sr-only"></span></a>
-                                                    </td>
-                                                    <td
-                                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                        <form action="{{ route('posts.destroy', $post->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method ('DELETE')
-                                                            <button class="text-red-500 pr-3" type="submit">
-                                                                Usuń
-                                                            </button>
-                                                        </form>
-                                                    </td>
+                                                    @if (Auth::user()->hasRole('moderator'))
+                                                        <td
+                                                            class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                                            <a href="{{ route('posts.edit', $post->id) }}"
+                                                                class="text-indigo-600 hover:text-indigo-900">Edytuj<span
+                                                                    class="sr-only"></span></a>
+                                                        </td>
+                                                        <td
+                                                            class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                                            <form action="{{ route('posts.destroy', $post->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method ('DELETE')
+                                                                <button class="text-red-500 pr-3" type="submit">
+                                                                    Usuń
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    @endif
+
                                                 </tr>
                                             @endforeach
                                             <!-- More people... -->
