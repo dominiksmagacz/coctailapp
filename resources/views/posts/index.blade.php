@@ -54,7 +54,7 @@
                                 <div class="mt-6 flex items-center">
                                     <div class="flex-shrink-0">
                                         <a href="#">
-                                            <span class="sr-only">Roel Aufderehar</span>
+                                            <span class="sr-only">{{ $post->author_id }}</span>
                                             <img class="h-10 w-10 rounded-full"
                                                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                                                 alt="">
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="ml-3">
                                         <p class="text-sm font-medium text-gray-900">
-                                            <a href="#" class="hover:underline">Roel Aufderehar</a>
+                                            <a href="#" class="hover:underline">{{ $post->user->name }}</a>
                                         </p>
                                         <div class="flex space-x-1 text-sm text-gray-500">
                                             <time datetime="2020-03-16">{{ $post->created_at }}</time>
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
     <div class="text-center ">
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Pozostałe artykuły</h2>
@@ -102,7 +102,7 @@
                                                 <input type="text" class="form-control" name="searchInput"
                                                     placeholder="Szukaj artykułu"> <span class="input-group-btn">
                                                     <button type="submit" class="btn btn-default">
-                                                        <span class="glyphicon glyphicon-search"></span>
+                                                        <span class="glyphicon glyphicon-search">Szukaj</span>
                                                     </button>
                                                 </span>
                                             </div>
@@ -122,10 +122,41 @@
                                                     Data powstania</th>
                                                 <th scope="col"
                                                     class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                                                    Tytuł</th>
+                                                    <!-- Search Bar -->
+                                                <br>
+                                                <form action="/posts/searchTitle" method="GET" role="search">
+                                                    {{ csrf_field() }}
+                                                    <div class="input-group mb-3">
+                                                        <input type="text" class="form-control" name="searchInput"
+                                                            placeholder="Tytuł"> <span class="input-group-btn">
+                                                            <button type="submit" class="btn btn-default">
+                                                                <span class="glyphicon glyphicon-search">Szukaj</span>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </form>
+                                            </th>
+
+                                                
                                                 <th scope="col"
                                                     class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                                                    Treść</th>
+                                                
+                                                           <!-- Search Bar -->
+                                                           <br>
+                                                           <form action="/posts/searchContent" method="GET" role="search">
+                                                               {{ csrf_field() }}
+                                                               <div class="input-group mb-3">
+                                                                   <input type="text" class="form-control" name="searchInput"
+                                                                       placeholder="Treść"> <span class="input-group-btn">
+                                                                       <button type="submit" class="btn btn-default">
+                                                                           <span class="glyphicon glyphicon-search">Szukaj</span>
+                                                                       </button>
+                                                                   </span>
+                                                               </div>
+                                                           </form>
+                                                        </th>
+
+                                                        
                                                 <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                                                     <span class="sr-only">Edytuj</span>
                                                 </th>
@@ -140,29 +171,36 @@
                                                     <td
                                                         class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                                         {{ $post->created_at }}</td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                                        <x-nav-link href="/posts/{{ $post->id }}/show"
-                                                            :active="request()->routeIs('posts.show')"> {{ $post->title }} </x-nav-link>
-                                                    </td>
+                                                    @if (Auth::user()->hasRole('reader'))
+                                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                            <x-nav-link href="/posts/{{ $post->id }}/show"
+                                                                :active="request()->routeIs('posts.show')"> {{ $post->title }} </x-nav-link>
+                                                        </td>
+                                                    @else
+                                                        <td class="px-3 py-4 text-sm text-gray-500">{{ $post->title }}
+                                                    @endif
                                                     <td class="px-3 py-4 text-sm text-gray-500">{{ $post->content }}
                                                     </td>
-                                                    <td
-                                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                        <a href="{{ route('posts.edit', $post->id) }}"
-                                                            class="text-indigo-600 hover:text-indigo-900">Edytuj<span
-                                                                class="sr-only"></span></a>
-                                                    </td>
-                                                    <td
-                                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                        <form action="{{ route('posts.destroy', $post->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method ('DELETE')
-                                                            <button class="text-red-500 pr-3" type="submit">
-                                                                Usuń
-                                                            </button>
-                                                        </form>
-                                                    </td>
+                                                    @if (Auth::user()->hasRole('moderator'))
+                                                        <td
+                                                            class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                                            <a href="{{ route('posts.edit', $post->id) }}"
+                                                                class="text-indigo-600 hover:text-indigo-900">Edytuj<span
+                                                                    class="sr-only"></span></a>
+                                                        </td>
+                                                        <td
+                                                            class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                                            <form action="{{ route('posts.destroy', $post->id) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method ('DELETE')
+                                                                <button class="text-red-500 pr-3" type="submit">
+                                                                    Usuń
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    @endif
+
                                                 </tr>
                                             @endforeach
                                             <!-- More people... -->

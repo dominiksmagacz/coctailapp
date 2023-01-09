@@ -12,6 +12,13 @@ class Post extends Model
     
     protected $fillable = [
         'title',
-        'content'
+        'content',
+        'author_id',
+        'image_path'
     ];
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'author_id');
+    }
 }

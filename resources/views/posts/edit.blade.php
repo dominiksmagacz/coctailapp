@@ -18,7 +18,7 @@
                                         method="POST" id="create_post"
                                         enctype="multipart/form-data">
                                         @csrf
-                                        @method ('PATCH')
+                                        @method ('PUT')
                                         {{ __('Nazwa przepisu') }}
                                         <br />
                                         <div

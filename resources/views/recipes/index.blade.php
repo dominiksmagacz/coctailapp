@@ -35,7 +35,7 @@
                                                 <input type="text" class="form-control" name="searchInput"
                                                     placeholder="Szukaj przepisu"> <span class="input-group-btn">
                                                     <button type="submit" class="btn btn-default">
-                                                        <span class="glyphicon glyphicon-search"></span>
+                                                        <span class="glyphicon glyphicon-search"> Szukaj</span>
                                                     </button>
                                                 </span>
                                             </div>
@@ -73,42 +73,52 @@
                                         <tbody class="divide-y divide-gray-200 bg-white">
                                             @foreach ($recipes as $recipe)
                                                 <tr>
-                                                    <td class="px-3 py-4 text-sm text-gray-500">
-                                                        <x-nav-link href="/recipes/{{ $recipe->id }}/show"
-                                                            :active="request()->routeIs('recipes.show')"> {{ $recipe->title }} </x-nav-link>
-                                                    </td>
+                                                    @if (Auth::user()->hasRole('reader'))
+                                                        <td class="px-3 py-4 text-sm text-gray-500">
+                                                            <x-nav-link href="/recipes/{{ $recipe->id }}/show"
+                                                                :active="request()->routeIs('recipes.show')"> {{ $recipe->title }} </x-nav-link>
+                                                        </td>
+                                                    @else
+                                                        <td class="px-3 py-4 text-sm text-gray-500">
+                                                            {{ $recipe->title }}</td>
+                                                    @endif
+
                                                     <td class="px-3 py-4 text-sm text-gray-500">
                                                         {{ $recipe->description }}</td>
                                                     <td
                                                         class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                        @if (!$recipe->user==null)
-                                                            {{ $recipe->user->name }}</td>
-                                                        @else
-                                                            Konto usunięte
-                                                        @endif
-                                                    <td class="px-3 py-4 text-sm text-gray-500">
-                                                        @foreach ($recipe->products as $product)
-                                                            <li>{{ $product->name }}</li>
-                                                        @endforeach
+                                                        @if (!$recipe->user == null)
+                                                            {{ $recipe->user->name }}
                                                     </td>
-                                                    <td
-                                                        class="relative py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                        <a href="{{ route('recipes.edit', $recipe->id) }}"
-                                                            class="text-indigo-600 hover:text-indigo-900">Edytuj<span
-                                                                class="sr-only"></span></a>
-                                                    </td>
-                                                    <td
-                                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                        <form action="{{ route('recipes.destroy', $recipe->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method ('DELETE')
-                                                            <button class="text-red-500 pr-3" type="submit">
-                                                                Usuń
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                </tr>
+                                                @else
+                                                    Konto usunięte
+                                            @endif
+                                            <td class="px-3 py-4 text-sm text-gray-500">
+                                                @foreach ($recipe->products as $product)
+                                                    <li>{{ $product->name }}</li>
+                                                @endforeach
+                                            </td>
+                                            @if (Auth::user()->hasRole('moderator'))
+                                                <td
+                                                    class="relative py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                                    <a href="{{ route('recipes.edit', $recipe->id) }}"
+                                                        class="text-indigo-600 hover:text-indigo-900">Edytuj<span
+                                                            class="sr-only"></span></a>
+                                                </td>
+                                                <td
+                                                    class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                                    <form action="{{ route('recipes.destroy', $recipe->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method ('DELETE')
+                                                        <button class="text-red-500 pr-3" type="submit">
+                                                            Usuń
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            @endif
+
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                     </table>

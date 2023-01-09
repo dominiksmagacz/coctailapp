@@ -20,6 +20,8 @@ class PostFactory extends Factory
         return [
             'title' => $this->faker->title(),
             'content' => $this->faker->paragraph(),
+            'author_id' => $this->faker->regexify('[1-3]'),
+            'image_path' => 'cos'
         ];
     }
 }

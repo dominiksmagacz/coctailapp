@@ -51,7 +51,7 @@ class PostController extends Controller
         Post::create([
             'title' => $request->title,
             'content' => $request->content,
-            'image_path' => '',
+            'image_path' => $this->storeImage($request),
             'author_id' => auth()->id()
         ]);
     
@@ -94,7 +94,7 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //dd('test');
+        // dd($request);
 
         Post::where('id', $id)->update($request->except(['_token', '_method']));
 
@@ -114,7 +114,7 @@ class PostController extends Controller
     }
 
 
-    public function search(Request $request)
+    public function searchTitle(Request $request)
     {
       
         $search = $request->input('searchInput');
@@ -125,5 +125,42 @@ class PostController extends Controller
             return view('posts.index', compact('posts', 'posts2'));
             else
             return view('posts.index', compact('posts', 'posts2'))->with('success', 'your message,here');
+    }
+
+    public function searchContent(Request $request)
+    {
+      
+        $search = $request->input('searchInput');
+        $posts = Post::where('content', 'LIKE', '%' . $search . '%')->paginate(5);
+        $posts2 = $posts;
+
+        if (count($posts) > 0)
+            return view('posts.index', compact('posts', 'posts2'));
+            else
+            return view('posts.index', compact('posts', 'posts2'))->with('success', 'your message,here');
+    }
+
+    private function storeImage($request)
+    {
+        // dd($request);
+        // $newImageName = uniqid() . '-' . $request->title . '.'  .
+        // extension_loaded($request->image_path);
+        // return $request->image->move(public_path('images'), $newImageName);
+
+        dd($request);
+
+        $request->validate([
+            'image_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        $imageName = time().'.'.$request->image->extension();  
+     
+        $request->image->move(public_path('images'), $imageName);
+  
+        /* Store $imageName name in DATABASE from HERE */
+        // return $request->image;
+        return back()
+            ->with('image',$imageName); 
+
+
     }
 }

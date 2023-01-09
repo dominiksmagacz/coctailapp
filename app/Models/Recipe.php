@@ -8,7 +8,7 @@ use Laravel\Scout\Searchable;
 
 class Recipe extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
 
     protected $fillable = [
         'title',

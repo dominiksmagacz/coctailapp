@@ -15,7 +15,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::all()->toQuery()->paginate(5);
+        $recipes = Recipe::all()->toQuery()->paginate(10);
         $products = Product::all()->take(4);
         
         return view('recipes.index', compact('recipes','products'));
@@ -93,12 +93,25 @@ class RecipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Recipe $recipe)
+    public function update(Request $request, Recipe $recipe, $id)
     {
-        // dd($request);
+        // dd($request->products);
+        // dd($id);
+
+
+        
+
         $recipe->update($request->all());
+        // $recipe->update($request->except(['_token', '_method']));
         // Recipe::where('id', $id)->update($request->except(['_token', '_method']));
         $recipe->products()->sync($request->products);
+
+        // $recipe->products()->syncWithPivotValues(
+        // $id,
+        //  ['cos']);
+
+        // $recipe->products()->sync($id);
+
 
 
         return redirect(route('recipes.index'))->with('message', 'Przepis został zmodyfikowany.');;
