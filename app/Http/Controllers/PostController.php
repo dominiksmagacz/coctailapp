@@ -113,32 +113,24 @@ class PostController extends Controller
         return redirect(route('posts.index'))->with('message', 'Artykuł został usunięty.');
     }
 
-
-    public function searchTitle(Request $request)
+    public function search(Request $request)
     {
       
         $search = $request->input('searchInput');
-        $posts = Post::where('title', 'LIKE', '%' . $search . '%')->paginate(5);
-        $posts2 = $posts;
+        $posts = Post::with('user')     
+        ->when($search, function ($query) {
+            $query->where(function($q) {
+                $q->where('title', 'like', '%'.request('searchInput'). '%')
+                ->orWhere('content', 'like', '%'.request('searchInput'). '%');
+        });
+    })->paginate(5);
 
-        if (count($posts) > 0)
-            return view('posts.index', compact('posts', 'posts2'));
+        if ( $posts->total() > 0)
+            return view('posts.index', compact('posts'));
             else
-            return view('posts.index', compact('posts', 'posts2'))->with('success', 'your message,here');
+            return view('posts.index', compact('posts'))->with('success', 'your message,here');
     }
 
-    public function searchContent(Request $request)
-    {
-      
-        $search = $request->input('searchInput');
-        $posts = Post::where('content', 'LIKE', '%' . $search . '%')->paginate(5);
-        $posts2 = $posts;
-
-        if (count($posts) > 0)
-            return view('posts.index', compact('posts', 'posts2'));
-            else
-            return view('posts.index', compact('posts', 'posts2'))->with('success', 'your message,here');
-    }
 
     private function storeImage($request)
     {

@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+// use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\ProfileController;
 
@@ -24,15 +25,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('/admins')->group(function () {
-    Route::get('/', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admins.index');
-    Route::post('/store', [AdminController::class, 'store'])->middleware(['auth', 'role:admin'])->name('admins.store');
-    Route::get('/{id}/show', [AdminController::class, 'show'])->middleware(['auth', 'role:admin'])->name('admins.show');
-    Route::get('/edit/{id}', [AdminController::class, 'edit'])->middleware(['auth', 'role:admin'])->name('admins.edit');
-    Route::get('/create', [AdminController::class, 'create'])->middleware(['auth', 'role:admin'])->name('admins.create');
-    Route::get('/search', [AdminController::class, 'search'])->middleware(['auth', 'role:admin'])->name('admins.search');
-    Route::delete('/{id}', [AdminController::class, 'destroy'])->middleware(['auth', 'role:admin'])->name('admins.destroy');
-    Route::put('/{id}', [AdminController::class, 'update'])->middleware(['auth', 'role:admin'])->name('admins.update');
+Route::middleware( ['auth', 'role:admin'])->name('admins.')->prefix('admins')->group(function (){
+// Route::prefix('/admins')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('index');
+    Route::post('/store', [AdminController::class, 'store'])->middleware(['auth', 'role:admin'])->name('store');
+    Route::get('/{id}/show', [AdminController::class, 'show'])->middleware(['auth', 'role:admin'])->name('show');
+    Route::get('/edit/{id}', [AdminController::class, 'edit'])->middleware(['auth', 'role:admin'])->name('edit');
+    Route::get('/create', [AdminController::class, 'create'])->middleware(['auth', 'role:admin'])->name('create');
+    Route::get('/search', [AdminController::class, 'search'])->middleware(['auth', 'role:admin'])->name('search');
+    Route::delete('/{id}', [AdminController::class, 'destroy'])->middleware(['auth', 'role:admin'])->name('destroy');
+    Route::put('/{id}', [AdminController::class, 'update'])->middleware(['auth', 'role:admin'])->name('update');
 });
 
 Route::prefix('/posts')->group(function () {
@@ -41,8 +43,7 @@ Route::prefix('/posts')->group(function () {
     Route::get('/{id}/show', [PostController::class, 'show'])->middleware(['auth', 'role:reader'])->name('posts.show');
     Route::get('/edit/{id}', [PostController::class, 'edit'])->middleware(['auth', 'role:moderator'])->name('posts.edit');
     Route::get('/create', [PostController::class, 'create'])->middleware(['auth', 'role:moderator'])->name('posts.create');
-    Route::get('/searchTitle', [PostController::class, 'searchTitle'])->name('posts.searchTitle');
-    Route::get('/searchContent', [PostController::class, 'searchContent'])->name('posts.searchContent');
+    Route::get('/search', [PostController::class, 'search'])->name('posts.search');
     Route::delete('/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::put('/{id}', [PostController::class, 'update'])->middleware(['auth', 'role:moderator'])->name('posts.update');
 });

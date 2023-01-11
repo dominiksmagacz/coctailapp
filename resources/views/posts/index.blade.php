@@ -34,7 +34,7 @@
 
 
                 <div class="mx-auto mt-12 grid max-w-lg gap-5 lg:max-w-none lg:grid-cols-3">
-                    @foreach ($posts2 as $post)
+                    @foreach ($posts as $post)
                         <div class="flex flex-col overflow-hidden rounded-lg shadow-lg">
                             <div class="flex-shrink-0">
                                 <img class="h-48 w-full object-cover"
@@ -122,39 +122,13 @@
                                                     Data powstania</th>
                                                 <th scope="col"
                                                     class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                                                    <!-- Search Bar -->
-                                                <br>
-                                                <form action="/posts/searchTitle" method="GET" role="search">
-                                                    {{ csrf_field() }}
-                                                    <div class="input-group mb-3">
-                                                        <input type="text" class="form-control" name="searchInput"
-                                                            placeholder="Tytuł"> <span class="input-group-btn">
-                                                            <button type="submit" class="btn btn-default">
-                                                                <span class="glyphicon glyphicon-search">Szukaj</span>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-                                                </form>
-                                            </th>
+                                                    Tytuł</th>
+                                            
 
                                                 
                                                 <th scope="col"
                                                     class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                                                
-                                                           <!-- Search Bar -->
-                                                           <br>
-                                                           <form action="/posts/searchContent" method="GET" role="search">
-                                                               {{ csrf_field() }}
-                                                               <div class="input-group mb-3">
-                                                                   <input type="text" class="form-control" name="searchInput"
-                                                                       placeholder="Treść"> <span class="input-group-btn">
-                                                                       <button type="submit" class="btn btn-default">
-                                                                           <span class="glyphicon glyphicon-search">Szukaj</span>
-                                                                       </button>
-                                                                   </span>
-                                                               </div>
-                                                           </form>
-                                                        </th>
+                                                        Treść</th>
 
                                                         
                                                 <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">

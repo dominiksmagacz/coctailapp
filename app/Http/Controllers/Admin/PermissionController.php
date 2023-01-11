@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Permission;
 
-class AdminController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +15,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-
-        $users = User::get()->toQuery()->paginate(10);
-
-
-        return view('admins.index', compact('users'));
+        $permissions = Permission::all();
+        return view('admins.permisions.index', compact('permissions'));
     }
 
     /**
@@ -29,7 +26,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admins.create');
+        //
     }
 
     /**
@@ -40,14 +37,7 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-            
-        ]);
-    
-        return redirect()->route('admins.index')->with('message', 'Konto zostało utworzone.');;
+        //
     }
 
     /**
@@ -58,9 +48,7 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
-
-        return view('admins.show', compact('user'));
+        //
     }
 
     /**
@@ -71,9 +59,7 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        return view('admins.edit', [
-            'user' => User::where('id', $id)->first()
-            ]);
+        //
     }
 
     /**
@@ -85,17 +71,7 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        User::where('id', $id)->update($request->except(['_token', '_method']));
-
-        // $validated = $request->validateWithBag('password');
-
-        $request->user()->update([
-            'password' => Hash::make($request->password),
-        ]);
-
-        //return back()->with('status', 'password-updated');
-
-        return redirect(route('admins.index'))->with('message', 'Konto zostało zmodyfikowane.');;
+        //
     }
 
     /**
@@ -106,8 +82,6 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
-        return redirect(route('admins.index'))->with('message', 'Konto zostało usunięte.');
-   
+        //
     }
 }
