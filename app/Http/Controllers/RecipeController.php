@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\UpdateRecipeRequest;
+use App\Http\Requests\StoreRecipeRequest;
 
 class RecipeController extends Controller
 {
@@ -39,7 +41,7 @@ class RecipeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRecipeRequest $request)
     {
         // dd($request);
         
@@ -87,6 +89,27 @@ class RecipeController extends Controller
         return view('recipes.edit', compact('recipe', 'products', 'selectedProducts'));
     }
 
+    // public function edit(Recipe $recipe)
+    // {
+    //     abort_if(Gate::denies('recipe_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    
+    //     $recipe->load('ingredients');
+    
+    //     $ingredients = Ingredient::get()->map(function($ingredient) use ($recipe) {
+    //         $ingredient->value = data_get($recipe->ingredients->firstWhere('id', $ingredient->id), 'pivot.amount') ?? null;
+    //         return $ingredient;
+    //     });
+    
+    //     return view('admin.recipes.edit', [
+    //         'ingredients' => $ingredients,
+    //         'recipe' => $recipe,
+    //     ]);
+    // }
+
+
+
+
+
     /**
      * Update the specified resource in storage.
      *
@@ -94,7 +117,7 @@ class RecipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Recipe $recipe, $id)
+    public function update(UpdateRecipeRequest $request, Recipe $recipe, $id)
     {
         // dd($request->products);
         // dd($id);
@@ -160,23 +183,25 @@ class RecipeController extends Controller
                 // ->orWhere( 'description', $search )
                 // ->paginate( 15 );
 
-                $recipes = DB::table('products')
-                ->join('product_recipe', 'products.id', '=', 'product_recipe.product_id')
-                ->join('recipes', 'product_recipe.recipe_id', '=', 'recipes.id')
-                ->select('recipes.title', 'recipes.description', 'products.name')
-                ->where('recipes.title', 'like', '%' . $search . '%')
-                ->orWhere('recipes.description', 'like', '%' . $search . '%')
-                ->orWhere('products.name', 'like', '%' . $search . '%')
-                ->get();
+                // $recipes = DB::table('products')
+                // ->join('product_recipe', 'products.id', '=', 'product_recipe.product_id')
+                // ->join('recipes', 'product_recipe.recipe_id', '=', 'recipes.id')
+                // ->select('recipes.title', 'recipes.description', 'products.name')
+                // ->where('recipes.title', 'like', '%' . $search . '%')
+                // ->orWhere('recipes.description', 'like', '%' . $search . '%')
+                // ->orWhere('products.name', 'like', '%' . $search . '%')
+                // ->get();
 
                
-                // $recipes = Recipe::with('products')    
-                //     ->when($search, function ($query) {
-                //         $query->where(function($q) {
-                //             $q->where('title', 'like', '%'.request('searchInput'). '%')
-                //             ->orWhere('description', 'like', '%'.request('searchInput'). '%');
-                //     });
-                // })->paginate(5);
+                $recipes = Recipe::with('products')    
+                    ->when($search, function ($query) {
+                        $query->where(function($q) {
+                            $q->where('title', 'like', '%'.request('searchInput'). '%')
+                            ->orWhere('description', 'like', '%'.request('searchInput'). '%')
+                            ->orWhere('products', 'like', '%'.request('searchInput'). '%');
+
+                    });
+                })->paginate(5);
 
 
         // if ($recipes->total() > 0)

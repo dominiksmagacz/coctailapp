@@ -15,11 +15,12 @@ class ProductSeeder extends Seeder
     public function run()
     {
        // Product::factory(30)->create();
-       Product::create(['name' => 'Ziemniak']);
-       Product::create(['name' => 'Jabłko']);
-       Product::create(['name' => 'Pomarańcza']);
-       Product::create(['name' => 'Ananas']);
-       Product::create(['name' => 'Kiwi']);
-       Product::create(['name' => 'Marchewka']);
+       Product::create(['name' => 'Ziemniak', 'amount' => '20']);
+       Product::create(['name' => 'Jabłko', 'amount' => '20']);
+       Product::create(['name' => 'Pomarańcza', 'amount' => '20']);
+       Product::create(['name' => 'Ananas', 'amount' => '20']);
+       Product::create(['name' => 'Kiwi', 'amount' => '20']);
+       Product::create(['name' => 'Marchewka', 'amount' => '20']);
+       
     }
 }

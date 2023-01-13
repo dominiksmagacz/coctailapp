@@ -35,7 +35,7 @@ class PermissionSeeder extends Seeder
             'user_edit',
             'user_show',
             'user_delete',
-            'user _access',
+            'user_access',
             'ingredient_create',
             'ingredient_edit',
             'ingredient_show',
@@ -56,7 +56,7 @@ class PermissionSeeder extends Seeder
 
         Role::create(['name'=> 'Super Admin']);
 
-        $user = Role::create(['name' => 'User']);
+        $role = Role::create(['name' => 'User']);
 
         $userPermissions = [
             'ingredient_create',
@@ -68,7 +68,7 @@ class PermissionSeeder extends Seeder
         ];
 
         foreach ($userPermissions as $permission){
-            $user->givePernissionTa($permission);
+            $role->givePernissionTa($permission);
         }
     }
 }

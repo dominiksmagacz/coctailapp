@@ -28,6 +28,7 @@ class ProductFactory extends Factory
                 'Ziemniak',
             ]),
             'type_of_measure' => $this->faker->title(),
+            'amount' => $this->faker->numberBetween(0,10),
         ];
     }
 }

@@ -14,12 +14,27 @@
                         <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                 <div class="overflow-hidden ring-black ring-opacity-5 md:rounded-lg">
+                                    <div class="pb-8 mb-5">
+                                        @if ($errors->any())
+                                            <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                                                Dane są nieprawidłowo wprowadzone...
+                                            </div>
+                                            <ul
+                                                class="'border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py- text-red-700">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>
+                                                        {{ $error }} 
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div>
                                     <form action="{{ route('admins.update', $user->id) }}" 
                                         method="POST" id="edit_user"
                                         enctype="multipart/form-data">
                                         @csrf
-                                        @method ('PATCH')
-                                        {{ __('Dane uzytkownika') }}
+                                        @method ('PUT')
+                                        {{ __('Edycja danych') }}
                                         <br />
                                         <div
                                             class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:pt-5">
@@ -54,7 +69,7 @@
                                             <div class="mt-1 sm:col-span-2 sm:mt-0">
                                                 <input type="password" name="password" id="password"
                                                     class="block w-full max-w-lg rounded-md focus:border-indigo-500 focus:ring-indigo-500 sm:max-w-xs sm:text-sm"
-                                                    value="{{ $user->password }}">
+                                                    value="">
                                             </div>
                                         </div>
                                         <br />

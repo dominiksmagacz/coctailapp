@@ -17,6 +17,22 @@
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                 <div class="overflow-hidden ring-black ring-opacity-5 md:rounded-lg">
 
+                                    <div class="pb-8 mb-5">
+                                        @if ($errors->any())
+                                            <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                                                Dane są nieprawidłowo wprowadzone...
+                                            </div>
+                                            <ul
+                                                class="'border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py- text-red-700">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>
+                                                        {{ $error }} 
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div>
+                                    
                                     <form action="{{ route('recipes.store') }}" method="POST" id="create_recipe">
                                         @csrf
                                         {{ __('Nazwa przepisu') }}
@@ -61,6 +77,45 @@
                                             </div>
                                         </div>
                                         <br />
+
+                                        <div class="form-group">
+                                            <label class="required" for="products"> cos </label>
+                                        
+                                            <table>
+                                                @foreach($products as $product)
+                                                    <tr>
+                                                        <td><input {{ $product->amount ? 'checked' : null }} data-id="{{ $product->id }}" type="checkbox" 
+                                                            class="product-enable"></td>
+                                                        <td>{{ $product->name }}</td>
+                                                        <td><input value="{{ $product->amount ?? null }}" {{ $product->amount ? null : 'disabled' }} 
+                                                            data-id="{{ $product->id }}" name="products[{{ $product->id }}]" type="text" 
+                                                            class="product-amount form-control" placeholder="Amount"></td>
+                                                    </tr>
+                                                @endforeach
+                                            </table>
+                                            
+                                            @section('scripts')
+                                                @parent
+                                                <script>
+                                                    $('document').ready(function () {
+                                                        $('.product-enable').on('click', function () {
+                                                            let id = $(this).attr('data-id')
+                                                            let enabled = $(this).is(":checked")
+                                                            $('.product-amount[data-id="' + id + '"]').attr('disabled', !enabled)
+                                                            $('.product-amount[data-id="' + id + '"]').val(null)
+                                                        })
+                                                    });
+                                                </script>
+                                                
+                                            @endsection
+                                            
+                                            @if($errors->has('products'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('products') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block"> ktos </span>
+                                        </div>
                                         
 
                                         {{ __('Produkty') }}
@@ -77,6 +132,7 @@
                                             </select>
                                         </div>
                                         <br />
+                                        
                                         
                                         <button type="submit" class="mb-10 inline-flex justify-center rounded-md border border-transparent 
                                         bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -46,7 +48,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
         Post::create([
             'title' => $request->title,
@@ -56,7 +58,6 @@ class PostController extends Controller
         ]);
     
         return redirect()->route('posts.index')->with('message', 'Przepis został dodany.');;
-            //dd($request);
     }
 
     /**
@@ -92,10 +93,8 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, $id)
     {
-        // dd($request);
-
         Post::where('id', $id)->update($request->except(['_token', '_method']));
 
         return redirect(route('posts.index'))->with('message', 'Przepis został zmodyfikowany.');;
