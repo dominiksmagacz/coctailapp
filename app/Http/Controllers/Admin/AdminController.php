@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AdminController extends Controller
 {
@@ -19,10 +21,14 @@ class AdminController extends Controller
     public function index()
     {
 
+        $permissions = Permission::all()->toQuery()->paginate(20);;
+        // if(count($permissions)>0)
+        //     $permissions->toQuery()->paginate(5);
+        $roles = Role::all()->toQuery()->paginate(20);
         $users = User::get()->toQuery()->paginate(10);
 
 
-        return view('admins.index', compact('users'));
+        return view('admins.index', compact('users', 'roles', 'permissions'));
     }
 
     /**
@@ -61,9 +67,11 @@ class AdminController extends Controller
      */
     public function show($id)
     {
+        $permissions = Permission::all();
+        $roles = Role::all();
         $user = User::find($id);
 
-        return view('admins.show', compact('user'));
+        return view('admins.show', compact('user', 'roles', 'permissions'));
     }
 
     /**

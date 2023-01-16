@@ -19,6 +19,9 @@
                 <div class="px-4 sm:px-6 lg:px-8">
                     <div class="sm:flex sm:items-center">
                     </div>
+
+                                            <!-- Users... -->
+
                     <div class="mt-8 flex flex-col">
                         <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
@@ -28,6 +31,10 @@
                                             class="inline-flex items-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-base font-medium 
                                 text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                             Dodaj uzytkownika</a>
+                                    </div>
+                                    <div class="px-4 sm:px-6 lg:px-8 mt-5 text-center text-blue-600">
+                                        Lista Uzytkowników
+
                                     </div>
                                     <table class="min-w-full divide-y divide-gray-300">
                                         <thead class="bg-gray-50">
@@ -83,6 +90,147 @@
                             </div>
                         </div>
                     </div>
+
+                                            <!-- Roles... -->
+
+                    <div class="mt-8 flex flex-col">
+                        <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                    <div class="mr-5 mt-5 mb-5 float-right">
+                                        <a href="{{ route('roles.create') }}"
+                                            class="inline-flex items-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-base font-medium 
+                                text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                            Dodaj role</a>
+                                    </div>
+                                    <div class="px-4 sm:px-6 lg:px-8 mt-5 text-center text-blue-600">
+                                        Lista ról
+
+                                    </div>
+                                    <table class="min-w-full divide-y divide-gray-300">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col"
+                                                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                                    Nazwa</th>
+                                                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                                                    <span class="sr-only">Edytuj</span>
+                                                </th>
+                                                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                                                    <span class="sr-only">Usuń</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-200 bg-white">
+                                            @foreach ($roles as $role)
+                                                <tr>
+                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                        <x-nav-link href="/roles/{{ $role->id }}/show"
+                                                            :active="request()->routeIs('admins.show')"> {{ $role->name }} </x-nav-link>
+                                                    </td>
+                                                    <td
+                                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                                        <a href="{{ route('roles.edit', $role->id) }}"
+                                                            class="text-indigo-600 hover:text-indigo-900">Edytuj<span
+                                                                class="sr-only"></span></a>
+                                                    </td>
+                                                    <td
+                                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                                        <form action="{{ route('roles.destroy', $role->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method ('DELETE')
+                                                            <button class="text-red-500 pr-3" type="submit">
+                                                                Usuń
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            <!-- More people... -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mb-5 mt-5">
+                                    {{ $roles->links() }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                                            <!-- Permissions... -->
+
+                    <div class="mt-8 flex flex-col">
+                        <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+                                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+                                    <div class="mr-5 mt-5 mb-5 float-right">
+                                        <a href="{{ route('permissions.create') }}"
+                                            class="inline-flex items-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-base font-medium 
+                                text-indigo-700 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                            Dodaj Uprawnienia</a>
+                                    </div>
+                                    @if ($permissions == null)
+                                        <div class="px-4 sm:px-6 lg:px-8 mt-5 text-center text-red-700">
+                                            Nie znaleziono zadnych uprawnień
+                                        </div>
+                                    @else
+                                        <div class="px-4 sm:px-6 lg:px-8 mt-5 text-center text-blue-600">
+                                            Lista Uprawnień
+                                        </div>
+                                    <table class="min-w-full divide-y divide-gray-300">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col"
+                                                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                                    Nazwa</th>
+                                                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                                                    <span class="sr-only">Edytuj</span>
+                                                </th>
+                                                <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                                                    <span class="sr-only">Usuń</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-200 bg-white">
+                                            @foreach ($permissions as $permission)
+                                                <tr>
+                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                        <a href="/permissions/{{ $permission->id }}/show"
+                                                            :active="request()->routeIs('permissions.show')"> {{ $permission->name }} </a>
+                                                    </td>
+                                                    <td
+                                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                                        <a href="{{ route('permissions.edit', $permission->id) }}"
+                                                            class="text-indigo-600 hover:text-indigo-900">Edytuj<span
+                                                                class="sr-only"></span></a>
+                                                    </td>
+                                                    <td
+                                                        class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                                        <form action="{{ route('permissions.destroy', $permission->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method ('DELETE')
+                                                            <button class="text-red-500 pr-3" type="submit">
+                                                                Usuń
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            <!-- More people... -->
+                                        </tbody>
+                                    </table>
+@endif
+
+                                </div>
+                                <div class="mb-5 mt-5">
+                                    {{ $permissions->links() }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

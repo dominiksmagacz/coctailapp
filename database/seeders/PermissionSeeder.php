@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class PermissionSeeder extends Seeder
@@ -44,7 +45,7 @@ class PermissionSeeder extends Seeder
             'recipes_create',
             'recipes_edit',
             'recipes_show',
-            'recipes delete',
+            'recipes_delete',
             'recipes_access'
         ];
         
@@ -56,19 +57,19 @@ class PermissionSeeder extends Seeder
 
         Role::create(['name'=> 'Super Admin']);
 
-        $role = Role::create(['name' => 'User']);
+        // $role = Role::create(['name' => 'User']);
 
-        $userPermissions = [
-            'ingredient_create',
-            'recipes create',
-            'recipes_edit',
-            'recipes_show',
-            'recipes_delete',
-            'recipes_access'
-        ];
+        // $userPermissions = [
+        //     'ingredient_create',
+        //     'recipes_create',
+        //     'recipes_edit',
+        //     'recipes_show',
+        //     'recipes_delete',
+        //     'recipes_access'
+        // ];
 
-        foreach ($userPermissions as $permission){
-            $role->givePernissionTa($permission);
-        }
+        // foreach ($userPermissions as $permission){
+        //     $role->givePermissionTo($permission);
+        // }
     }
 }

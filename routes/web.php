@@ -7,6 +7,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\ProfileController;
 
@@ -25,8 +27,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware( ['auth', 'role:admin'])->name('admins.')->prefix('admins')->group(function (){
-// Route::prefix('/admins')->group(function () {
+Route::middleware(['auth', 'role:admin'])->name('admins.')->prefix('admins')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->middleware(['auth', 'role:admin'])->name('index');
     Route::post('/store', [AdminController::class, 'store'])->middleware(['auth', 'role:admin'])->name('store');
     Route::get('/{id}/show', [AdminController::class, 'show'])->middleware(['auth', 'role:admin'])->name('show');
@@ -35,6 +36,29 @@ Route::middleware( ['auth', 'role:admin'])->name('admins.')->prefix('admins')->g
     Route::get('/search', [AdminController::class, 'search'])->middleware(['auth', 'role:admin'])->name('search');
     Route::delete('/{id}', [AdminController::class, 'destroy'])->middleware(['auth', 'role:admin'])->name('destroy');
     Route::put('/{id}', [AdminController::class, 'update'])->middleware(['auth', 'role:admin'])->name('update');
+});
+
+Route::middleware(['auth', 'role:admin'])->name('permissions.')->prefix('permissions')->group(function () {
+    Route::get('/', [PermissionController::class, 'index'])->middleware(['auth', 'role:admin'])->name('index');
+    Route::post('/store', [PermissionController::class, 'store'])->middleware(['auth', 'role:admin'])->name('store');
+    Route::get('/{id}/show', [PermissionController::class, 'show'])->middleware(['auth', 'role:admin'])->name('show');
+    Route::get('/edit/{id}', [PermissionController::class, 'edit'])->middleware(['auth', 'role:admin'])->name('edit');
+    Route::get('/create', [PermissionController::class, 'create'])->middleware(['auth', 'role:admin'])->name('create');
+    Route::get('/search', [PermissionController::class, 'search'])->middleware(['auth', 'role:admin'])->name('search');
+    Route::delete('/{id}', [PermissionController::class, 'destroy'])->middleware(['auth', 'role:admin'])->name('destroy');
+    Route::put('/{id}', [PermissionController::class, 'update'])->middleware(['auth', 'role:admin'])->name('update');
+});
+
+Route::middleware(['auth', 'role:admin'])->name('roles.')->prefix('roles')->group(function () {
+    Route::get('/', [RoleController::class, 'index'])->middleware(['auth', 'role:admin'])->name('index');
+    Route::post('/store', [RoleController::class, 'store'])->middleware(['auth', 'role:admin'])->name('store');
+    Route::get('/{id}/show', [RoleController::class, 'show'])->middleware(['auth', 'role:admin'])->name('show');
+    Route::get('/edit/{id}', [RoleController::class, 'edit'])->middleware(['auth', 'role:admin'])->name('edit');
+    Route::get('/create', [RoleController::class, 'create'])->middleware(['auth', 'role:admin'])->name('create');
+    Route::get('/search', [RoleController::class, 'search'])->middleware(['auth', 'role:admin'])->name('search');
+    Route::delete('/{id}', [RoleController::class, 'destroy'])->middleware(['auth', 'role:admin'])->name('destroy');
+    Route::put('/{id}', [RoleController::class, 'update'])->middleware(['auth', 'role:admin'])->name('update');
+    Route::post('/roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('permissions');
 });
 
 Route::prefix('/posts')->group(function () {
@@ -55,7 +79,7 @@ Route::prefix('/recipes')->group(function () {
     Route::get('/edit/{id}', [RecipeController::class, 'edit'])->middleware(['auth', 'role:moderator'])->name('recipes.edit');
     Route::get('/search', [RecipeController::class, 'search'])->name('recipes.search');
     Route::get('/create', [RecipeController::class, 'create'])->middleware(['auth', 'role:moderator'])->name('recipes.create');
-    Route::delete('/{id}', [RecipeController::class, 'destroy'])->name ('recipes.destroy');
+    Route::delete('/{id}', [RecipeController::class, 'destroy'])->name('recipes.destroy');
     Route::put('/{id}', [RecipeController::class, 'update'])->middleware(['auth', 'role:moderator'])->name('recipes.update');
 });
 
@@ -76,7 +100,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
 });
 
 require __DIR__ . '/auth.php';

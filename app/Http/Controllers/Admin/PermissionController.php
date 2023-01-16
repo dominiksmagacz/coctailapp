@@ -16,7 +16,7 @@ class PermissionController extends Controller
     public function index()
     {
         $permissions = Permission::all();
-        return view('admins.permisions.index', compact('permissions'));
+        return view('admins.permissions.index', compact('permissions'));
     }
 
     /**
@@ -26,7 +26,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        //
+        return view('admins.permissions.create');
     }
 
     /**
@@ -48,7 +48,9 @@ class PermissionController extends Controller
      */
     public function show($id)
     {
-        //
+        $permissions = Permission::find($id);
+
+        return view('admins.permissions.show', compact('permissions'));
     }
 
     /**
@@ -59,7 +61,10 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admins.permissions.edit', [
+            'permission' => Permission::where('id', $id)->first()
+            ]);
+        
     }
 
     /**
@@ -71,7 +76,9 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Permission::where('id', $id)->update($request->except(['_token', '_method']));
+
+        return redirect(route('admins.index'))->with('message', 'Uprawnienie zostało zmodyfikowane.');
     }
 
     /**
@@ -82,6 +89,7 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Permission::destroy($id);
+        return redirect(route('admins.index'))->with('message', 'Uprawnienie zostało usunięte.');
     }
 }
