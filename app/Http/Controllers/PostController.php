@@ -95,7 +95,19 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, $id)
     {
+
+        // dd($request->file('image_path'));
         Post::where('id', $id)->update($request->except(['_token', '_method']));
+
+        // Post::updated([
+        //     'image_path' => $this->storeImage($request->file->image_path),
+        // ]);
+        $file = request()->file('image_path');
+        $file->store(public_path('images'));
+        // dd($request);
+        // $imageName = time().'.'.$request->file('image_path')->getClientOriginalExtension();
+        // $request->file('image_path')->move(public_path('images'), $imageName);
+        // dd($cs);
 
         return redirect(route('posts.index'))->with('message', 'Przepis został zmodyfikowany.');;
     }
@@ -133,25 +145,10 @@ class PostController extends Controller
 
     private function storeImage($request)
     {
-        // dd($request);
-        // $newImageName = uniqid() . '-' . $request->title . '.'  .
-        // extension_loaded($request->image_path);
-        // return $request->image->move(public_path('images'), $newImageName);
 
-        dd($request);
+        $imageName = time().'.'.$request->image_path->extension();  
+        $request->image_path->move(public_path('images'), $imageName);
 
-        $request->validate([
-            'image_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-        $imageName = time().'.'.$request->image->extension();  
-     
-        $request->image->move(public_path('images'), $imageName);
-  
-        /* Store $imageName name in DATABASE from HERE */
-        // return $request->image;
-        return back()
-            ->with('image',$imageName); 
-
-
+        return public_path('images'.'/'.$imageName); 
     }
 }

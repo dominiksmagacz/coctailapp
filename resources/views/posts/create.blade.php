@@ -63,7 +63,7 @@
                                         </div>
                                         <br />
                                         <div class="col-md-6">
-                                            <input type="file" accept="image/*,.pdf" name="image_path"
+                                            <input type="file" accept="image/*,.pdf,.jpg" name="image_path"
                                                 class="form-control">
                                         </div>
                                         <br />

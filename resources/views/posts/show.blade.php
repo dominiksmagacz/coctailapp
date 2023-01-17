@@ -15,6 +15,13 @@
                         <h1>
                             {{ $post->title }}
                         </h1>
+                        <br>
+                        <div class="flex-shrink-0">
+                            <img class="h-full w-full object-cover"
+                                src="{{url('/images/'.basename($post->image_path))}}"
+                                alt="">
+                        </div>
+                        <br>
                         <p>
                             {{ $post->content }}
                         </p>

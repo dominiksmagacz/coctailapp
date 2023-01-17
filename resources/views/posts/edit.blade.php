@@ -64,6 +64,10 @@
                                             </div>
                                         </div>
                                         <br />
+                                        <div class="col-md-6">
+                                            <input type="file" accept="image/*,.pdf,.jpg" name="image_path"
+                                                class="form-control">
+                                        </div>
                                         <br />
                                         <button type="submit" class="mb-10 inline-flex justify-center rounded-md border border-transparent 
                                         bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 
