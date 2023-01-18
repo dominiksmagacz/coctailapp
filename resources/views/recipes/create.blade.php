@@ -80,17 +80,17 @@
                                         <br />
 
                                         <div class="form-group">
-                                            <label class="required" for="products"> cos </label>
+                                            <label class="required" for="ingredients"> cos </label>
                                         
                                             <table>
-                                                @foreach($products as $product)
+                                                @foreach($ingredients as $ingredient)
                                                     <tr>
-                                                        <td><input {{ $product->amount ? 'checked' : null }} data-id="{{ $product->id }}" type="checkbox" 
-                                                            class="product-enable"></td>
-                                                        <td>{{ $product->name }}</td>
-                                                        <td><input value="{{ $product->amount ?? null }}" {{ $product->amount ? null : 'disabled' }} 
-                                                            data-id="{{ $product->id }}" name="products[{{ $product->id }}]" type="text" 
-                                                            class="product-amount form-control" placeholder="Amount"></td>
+                                                        <td><input {{ $ingredient->amount ? 'checked' : null }} data-id="{{ $ingredient->id }}" type="checkbox" 
+                                                            class="ingredient-enable"></td>
+                                                        <td>{{ $ingredient->name }}</td>
+                                                        <td><input value="{{ $ingredient->amount ?? null }}" {{ $ingredient->amount ? null : 'disabled' }} 
+                                                            data-id="{{ $ingredient->id }}" name="ingredients[{{ $ingredient->id }}]" type="text" 
+                                                            class="ingredient-amount form-control" placeholder="Amount"></td>
                                                     </tr>
                                                 @endforeach
                                             </table>
@@ -99,20 +99,20 @@
                                                 @parent
                                                 <script>
                                                     $('document').ready(function () {
-                                                        $('.product-enable').on('click', function () {
+                                                        $('.ingredient-enable').on('click', function () {
                                                             let id = $(this).attr('data-id')
                                                             let enabled = $(this).is(":checked")
-                                                            $('.product-amount[data-id="' + id + '"]').attr('disabled', !enabled)
-                                                            $('.product-amount[data-id="' + id + '"]').val(null)
+                                                            $('.ingredient-amount[data-id="' + id + '"]').attr('disabled', !enabled)
+                                                            $('.ingredient-amount[data-id="' + id + '"]').val(null)
                                                         })
                                                     });
                                                 </script>
                                                 
                                             @endsection
                                             
-                                            @if($errors->has('products'))
+                                            @if($errors->has('ingredients'))
                                                 <div class="invalid-feedback">
-                                                    {{ $errors->first('products') }}
+                                                    {{ $errors->first('ingredients') }}
                                                 </div>
                                             @endif
                                             <span class="help-block"> ktos </span>
@@ -123,11 +123,11 @@
                                         <br />
                                         <div class="text-black">
                                             <select
-                                                class="js-products form-control block w-full px-3 py-1.5 text-base font-normal text-white bg-transparent bg-clip-padding border-0 border-b-2 border-solid border-teal-300  transition ease-in-out m-0   focus:text-gray-700 active:border-teal-300 focus:ring-teal-300 focus:bg-[#e4dcdc59] focus:border-0  focus:border-teal-300 focus:outline-none"
-                                                name="products[]" multiple="multiple">
-                                                @foreach ($products as $product)
-                                                    <option value="{{ $product->id }}">
-                                                        {{ $product->name }}
+                                                class="js-ingredients form-control block w-full px-3 py-1.5 text-base font-normal text-white bg-transparent bg-clip-padding border-0 border-b-2 border-solid border-teal-300  transition ease-in-out m-0   focus:text-gray-700 active:border-teal-300 focus:ring-teal-300 focus:bg-[#e4dcdc59] focus:border-0  focus:border-teal-300 focus:outline-none"
+                                                name="ingredients[]" multiple="multiple">
+                                                @foreach ($ingredients as $ingredient)
+                                                    <option value="{{ $ingredient->id }}">
+                                                        {{ $ingredient->name }}
                                                     </option>
                                                 @endforeach
                                             </select>

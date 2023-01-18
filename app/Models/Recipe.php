@@ -25,9 +25,9 @@ class Recipe extends Model
         return $this->hasOne(User::class, 'id', 'author_id');
     }
 
-    public function products()
+    public function ingredients()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Ingredient::class);
     }
     
 }

@@ -6,11 +6,12 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FallbackController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\PermissionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +88,7 @@ Route::get('/shops', [ShopController::class, 'index'])->name('shops.index');
 //Route::get('/home',HomeController::class)->name('home');
 Route::get('/users/{id}/show', [UserController::class, 'show'])->name('users.show');
 
+Route::fallback(FallbackController::class, '__invoke');
 
 
 

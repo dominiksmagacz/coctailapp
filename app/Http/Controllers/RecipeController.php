@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Ingredient;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,9 +19,9 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::all()->toQuery()->paginate(10);
-        $products = Product::all()->take(4);
+        $ingredients = Ingredient::all()->take(4);
         
-        return view('recipes.index', compact('recipes','products'));
+        return view('recipes.index', compact('recipes','ingredients'));
     }
 
     /**
@@ -31,8 +31,8 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
-        return view('recipes.create', compact('products'));
+        $ingredients = Ingredient::all();
+        return view('recipes.create', compact('ingredients'));
     }
 
     /**
@@ -52,7 +52,7 @@ class RecipeController extends Controller
             'image_path' => '',
             'author_id' => auth()->id()
     ]);
-        $recipe->products()->sync($request->products);
+        $recipe->ingredients()->sync($request->ingredients);
 
         return redirect()->route('recipes.index')->with('message', 'Przepis został dodany.');;
     }
@@ -79,14 +79,14 @@ class RecipeController extends Controller
     public function edit(Recipe $recipe, $id)
     {
         $recipe = Recipe::find($id);
-        $products = Product::orderBy('name', 'ASC')->get();
+        $ingredients = Ingredient::orderBy('name', 'ASC')->get();
 
-        $selectedProducts = [];
-        foreach($recipe->products as $product){
-            $selectedProducts[] = $product->id;
+        $selectedingredients = [];
+        foreach($recipe->ingredients as $ingredient){
+            $selectedingredients[] = $ingredient->id;
         }
 // dd($recipe);
-        return view('recipes.edit', compact('recipe', 'products', 'selectedProducts'));
+        return view('recipes.edit', compact('recipe', 'ingredients', 'selectedingredients'));
     }
 
     // public function edit(Recipe $recipe)
@@ -119,7 +119,7 @@ class RecipeController extends Controller
      */
     public function update(UpdateRecipeRequest $request, Recipe $recipe, $id)
     {
-        // dd($request->products);
+        // dd($request->ingredients);
         // dd($id);
 
         $recipe = Recipe::findOrFail($id);
@@ -128,13 +128,13 @@ class RecipeController extends Controller
         $recipe->update($request->all());
         // $recipe->update($request->except(['_token', '_method']));
         // Recipe::where('id', $id)->update($request->except(['_token', '_method']));
-        $recipe->products()->sync($request->products);
+        $recipe->ingredients()->sync($request->ingredients);
 
-        // $recipe->products()->syncWithPivotValues(
+        // $recipe->ingredients()->syncWithPivotValues(
         // $id,
         //  ['cos']);
 
-        // $recipe->products()->sync($id);
+        // $recipe->ingredients()->sync($id);
 
 
 
@@ -159,46 +159,46 @@ class RecipeController extends Controller
     {
 
         $search = $request->input('searchInput');
-        // $recipes = Recipe::with('products')
+        // $recipes = Recipe::with('ingredients')
         //     ->when(request('searchInput'), function ($query) {
         //         $query->where(function($q) {
         //             $q->where('title', 'ilike', '%'.request('searchInput'). '%')
         //             ->orWhere('description', 'ilike', '%'.request('searchInput'). '%')
-        //             ->orWhere('products', 'ilike', '%'.request('searchInput'). '%');
+        //             ->orWhere('ingredients', 'ilike', '%'.request('searchInput'). '%');
         //         });
         //     })->paginate(15);
         //     // dd($recipes);
 
 
-        //         $recipes = Recipe::whereHas('products', function ($query) use ($search){
+        //         $recipes = Recipe::whereHas('ingredients', function ($query) use ($search){
         //             $query->where('title', 'like', '%'.$search.'%');
         //         })
-        //         ->with(['products' => function($query) use ($search){
+        //         ->with(['ingredients' => function($query) use ($search){
         //             $query->where('description', 'like', '%'.$search.'%');
         //         }])->get();
 
-                // $recipes = Recipe::join( 'products', 'products.id', '=', 'id' )
+                // $recipes = Recipe::join( 'ingredients', 'ingredients.id', '=', 'id' )
                 // ->where( 'title', 'LIKE', '%'.$search.'%' )
                 // ->orWhere( 'name', $search )
                 // ->orWhere( 'description', $search )
                 // ->paginate( 15 );
 
-                // $recipes = DB::table('products')
-                // ->join('product_recipe', 'products.id', '=', 'product_recipe.product_id')
-                // ->join('recipes', 'product_recipe.recipe_id', '=', 'recipes.id')
-                // ->select('recipes.title', 'recipes.description', 'products.name')
+                // $recipes = DB::table('ingredients')
+                // ->join('ingredient_recipe', 'ingredients.id', '=', 'ingredient_recipe.ingredient_id')
+                // ->join('recipes', 'ingredient_recipe.recipe_id', '=', 'recipes.id')
+                // ->select('recipes.title', 'recipes.description', 'ingredients.name')
                 // ->where('recipes.title', 'like', '%' . $search . '%')
                 // ->orWhere('recipes.description', 'like', '%' . $search . '%')
-                // ->orWhere('products.name', 'like', '%' . $search . '%')
+                // ->orWhere('ingredients.name', 'like', '%' . $search . '%')
                 // ->get();
 
                
-                $recipes = Recipe::with('products')    
+                $recipes = Recipe::with('ingredients')    
                     ->when($search, function ($query) {
                         $query->where(function($q) {
                             $q->where('title', 'like', '%'.request('searchInput'). '%')
                             ->orWhere('description', 'like', '%'.request('searchInput'). '%')
-                            ->orWhere('products', 'like', '%'.request('searchInput'). '%');
+                            ->orWhere('ingredients', 'like', '%'.request('searchInput'). '%');
 
                     });
                 })->paginate(5);

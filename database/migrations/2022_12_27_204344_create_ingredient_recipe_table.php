@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_recipe', function (Blueprint $table) {
+        Schema::create('ingredient_recipe', function (Blueprint $table) {
             // $table->unsignedBigInteger('recipe_id');
-            // $table->unsignedBigInteger('product_id');
+            // $table->unsignedBigInteger('ingredient_id');
 
             // $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
-            // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreignId('product_id')
+            // $table->foreign('ingredient_id')->references('id')->on('ingredients')->onDelete('cascade');
+            $table->foreignId('ingredient_id')
             ->references('id')
-            ->on('products')
+            ->on('ingredients')
             ->onDelete('cascade');
           $table->foreignId('recipe_id')
             ->references('id')
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_recipe');
+        Schema::dropIfExists('ingredient_recipe');
     }
 };

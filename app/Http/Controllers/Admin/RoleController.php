@@ -107,11 +107,14 @@ class RoleController extends Controller
 
     public function givePermission(Request $request, Role $role)
     {
-        dd($role);
+        // dd($request->permission);
         if ($role->hasPermissionTo($request->permission)) {
-            return back()->with('message', 'Uprawnienie jest juz dodane.');
+            // return back()->with('message', 'Uprawnienie jest juz dodane.');
+        redirect(route('admins.index'))->with('message', 'Rola została zmodyfikowana.');
         }
+
         $role->givePermissionTo($request->permission);
-        return back()->with('message', 'Dodano uprawnienie.');
+        // return back()->with('message', 'Dodano uprawnienie.');
+        return redirect(route('admins.index'))->with('message', 'Rola została zmodyfikowana.');
     }
 }

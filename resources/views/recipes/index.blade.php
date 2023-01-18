@@ -94,8 +94,8 @@
                                                     Konto usunięte
                                             @endif
                                             <td class="px-3 py-4 text-sm text-gray-500">
-                                                @foreach ($recipe->products as $product)
-                                                    <li>{{ $product->name }}</li>
+                                                @foreach ($recipe->ingredients as $ingredient)
+                                                    <li>{{ $ingredient->name }}</li>
                                                 @endforeach
                                             </td>
                                             @if (Auth::user()->hasRole('moderator'))

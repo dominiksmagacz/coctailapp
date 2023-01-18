@@ -82,13 +82,13 @@
                                         {{ __('Produkty') }}
                                         <br />
                                         <div class="text-black">
-                                            <select class="js-products mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none 
-                                            focus:ring-teal-300 focus:border-teal-300 sm:text-sm rounded-md" name="products[]" multiple="multiple">
-                                            @foreach($products as $product)
-                                                @if(in_array($product->id, $selectedProducts))
-                                                <option value="{{ $product->id }}" selected="true">{{ $product->name }}</option>
+                                            <select class="js-ingredients mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none 
+                                            focus:ring-teal-300 focus:border-teal-300 sm:text-sm rounded-md" name="ingredients[]" multiple="multiple">
+                                            @foreach($ingredients as $ingredient)
+                                                @if(in_array($ingredient->id, $selectedingredients))
+                                                <option value="{{ $ingredient->id }}" selected="true">{{ $ingredient->name }}</option>
                                                 @else
-                                                <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                                <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
                                                 @endif 
                                             @endforeach
                                             </select>
