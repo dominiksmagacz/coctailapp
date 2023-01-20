@@ -50,12 +50,16 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+
+        // dd($request);
         Post::create([
             'title' => $request->title,
             'content' => $request->content,
-            'image_path' => $this->storeImage($request),
+            // 'image_path' => $this->storeImage($request),
+            'image_path' => $this->storeImageinStore($request),
             'author_id' => auth()->id()
         ]);
+        
     
         return redirect()->route('posts.index')->with('message', 'Przepis został dodany.');;
     }
@@ -95,15 +99,14 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, $id)
     {
-
         // dd($request->file('image_path'));
         Post::where('id', $id)->update($request->except(['_token', '_method']));
 
-        // Post::updated([
-        //     'image_path' => $this->storeImage($request->file->image_path),
-        // ]);
-        $file = request()->file('image_path');
-        $file->store(public_path('images'));
+        Post::updated([
+            'image_path' => $this->storeImageinStore($request),
+        ]);
+        // $file = request()->file('image_path');
+        // $file->store(public_path('public'));
         // dd($request);
         // $imageName = time().'.'.$request->file('image_path')->getClientOriginalExtension();
         // $request->file('image_path')->move(public_path('images'), $imageName);
@@ -145,10 +148,16 @@ class PostController extends Controller
 
     private function storeImage($request)
     {
-
+        //do zmiany na Store::....
         $imageName = time().'.'.$request->image_path->extension();  
         $request->image_path->move(public_path('images'), $imageName);
 
         return public_path('images'.'/'.$imageName); 
+    }
+
+    private function storeImageinStore($request){
+        $path = $request->file('image_path')->store('public');
+ 
+        return $path;
     }
 }

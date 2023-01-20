@@ -119,7 +119,7 @@
                                         </div>
                                         
 
-                                        {{ __('Produkty') }}
+                                        {{ __('Składniki') }}
                                         <br />
                                         <div class="text-black">
                                             <select

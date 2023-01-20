@@ -7,6 +7,7 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use App\Models\User;
 use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
@@ -56,7 +57,8 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::find($id);
-        return view('admins.roles.show', compact('role'));
+        $permissions = Permission::all();
+        return view('admins.roles.show', compact('role', 'permissions'));
     }
 
     /**
@@ -105,16 +107,47 @@ class RoleController extends Controller
         return redirect(route('admins.index'))->with('message', 'Rola została usunięta.');
     }
 
+    
     public function givePermission(Request $request, Role $role)
     {
-        // dd($request->permission);
         if ($role->hasPermissionTo($request->permission)) {
-            // return back()->with('message', 'Uprawnienie jest juz dodane.');
-        redirect(route('admins.index'))->with('message', 'Rola została zmodyfikowana.');
+            return redirect(route('admins.index'))->with('message', 'Rola ' . $role->name . ' posiada juz takie uprawnienie.');
         }
-
         $role->givePermissionTo($request->permission);
-        // return back()->with('message', 'Dodano uprawnienie.');
-        return redirect(route('admins.index'))->with('message', 'Rola została zmodyfikowana.');
+        return redirect(route('admins.index'))->with('message', 'Uprawnienie zostało dodane do roli ' . $role->name);
+    }
+
+
+    public function giveRole(Request $request, Role $role, User $user)
+    {
+        // dd($user);
+        if ($user->hasRole($request->role)) {
+            return redirect(route('admins.index'))->with('message', 'Uzytkownik ' . $user->name . ' juz posiada taką rolę');
+        }
+        $user->assignRole($request->role);
+        return redirect(route('admins.index'))->with('message', 'Rola została dodana do uzytkownika ' . $user->name);
+    }
+
+    public function removeRole(Request $request, Role $role, User $user)
+    {
+        // dd($request);   
+        
+        if ($user->hasRole($request->role)) {
+            $user->removeRole($request->role);
+            return redirect(route('admins.index'))->with('message', 'Rola została odjęta uzytkownikowi.');
+        }
+        else
+            return redirect(route('admins.index'))->with('message', 'Uzytkownik nie posiada takiej roli.');
+        
+    }
+
+    public function removePermission(Request $request, Role $role)
+    {
+        if ($role->hasPermissionTo($request->permission)) {
+            $role->revokePermissionTo($request->permission);
+            return redirect(route('admins.index'))->with('message', 'Uprawnienie zostało usunięte z roli: ' . $role->name);
+        }
+        else
+        return redirect(route('admins.index'))->with('message', 'Rola ' . $role->name . ' nie posiada takiego uprawnienia.');
     }
 }

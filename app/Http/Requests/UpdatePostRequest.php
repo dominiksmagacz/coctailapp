@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePostRequest extends FormRequest
 {
@@ -24,7 +25,7 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'unique:posts', 'max:255'],
+            'title' => ['required', Rule::unique('posts', 'title')->ignore($this->post)],
             'content' => ['required', 'max:2048'],
             'image_path' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ];

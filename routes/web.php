@@ -60,6 +60,10 @@ Route::middleware(['auth', 'role:admin'])->name('roles.')->prefix('roles')->grou
     Route::delete('/{id}', [RoleController::class, 'destroy'])->middleware(['auth', 'role:admin'])->name('destroy');
     Route::put('/{id}', [RoleController::class, 'update'])->middleware(['auth', 'role:admin'])->name('update');
     Route::post('/roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('permissions');
+    Route::post('/roles/{role}/permissions_remove', [RoleController::class, 'removePermission'])->name('permissions.remove');
+    Route::post('/roles/{user}', [RoleController::class, 'giveRole'])->name('user');
+    Route::post('/roles/{user}/removeRole', [RoleController::class, 'removeRole'])->name('remove');
+
 });
 
 Route::prefix('/posts')->group(function () {

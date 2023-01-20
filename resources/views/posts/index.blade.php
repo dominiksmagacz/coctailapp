@@ -38,7 +38,7 @@
                         <div class="flex flex-col overflow-hidden rounded-lg shadow-lg">
                             <div class="flex-shrink-0">
                                 <img class="h-48 w-full object-cover"
-                                    src="{{url('/images/'.basename($post->image_path))}}"
+                                    src="{{ Storage::url(basename($post->image_path))  }}"
                                     alt="">
                             </div>
                             <div class="flex flex-1 flex-col justify-between bg-white p-6">

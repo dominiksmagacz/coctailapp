@@ -80,10 +80,17 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $users, $id)
     {
+        $roles = Role::all();
+        $selectedroles = [];
+        foreach($users->roles as $role){
+            $selectedrole[] = $role->id;
+        }
         return view('admins.edit', [
-            'user' => User::where('id', $id)->first()
+            'user' => User::where('id', $id)->first(),
+            'roles' => $roles,
+            'selectedroles' => $selectedroles
             ]);
     }
 

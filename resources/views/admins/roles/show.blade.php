@@ -16,7 +16,14 @@
                         <p>
                             {{ $role->name }}
                         </p>
-                    
+                        <br>
+                        @foreach ( $role->permissions  as  $permission )
+                        <p>
+                            {{ $permission->name }}
+                        </p>
+                     
+                        @endforeach
+                       
                         
                     </div>
                 </div>

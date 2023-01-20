@@ -19,7 +19,7 @@ class RecipeController extends Controller
     public function index()
     {
         $recipes = Recipe::all()->toQuery()->paginate(10);
-        $ingredients = Ingredient::all()->take(4);
+        $ingredients = Ingredient::all();
         
         return view('recipes.index', compact('recipes','ingredients'));
     }

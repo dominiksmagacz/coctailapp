@@ -57,7 +57,7 @@
                                         <br />
                                     </form>
 
-                                    <form action="{{ route('roles.permissions', $role->id) }}" method="POST" id="add_role">
+                                    <form action="{{ route('roles.permissions', $role->id) }}" method="POST" id="add_permissions_to_role">
                                         @csrf
                                         @method ('POST')
                                         {{ __('Dodanie uprawnień') }}
@@ -74,6 +74,26 @@
                                         <button type="submit" class="mb-10 mt-5 inline-flex justify-center rounded-md border border-transparent 
                                         bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 
                                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Dodaj</button>
+                                        </div>
+                                    </form>
+
+                                    <form action="{{ route('roles.permissions.remove', $role->id) }}" method="POST" id="remove_permissions_from_role">
+                                        @csrf
+                                        @method ('POST')
+                                        {{ __('Usuwanie uprawnień') }}
+                                        <br />
+                                        <div class="sm:col-span-6">
+                                            <label for="permission" class="block text-sm font-medium text-gray-700">Wybierz uprawnienie do usunięcia</label> 
+                                            <select id="permission" name="permission" autocomplete="permission-name" class="mt-1 block w-full py-2 px-3 border bg-gray-300">
+                                            @foreach ($permissions as $permission)
+                                            <option value="{{ $permission->name }}">{{ $permission->name }}</option>
+                                            @endforeach 
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="mb-10 mt-5 inline-flex justify-center rounded-md border border-transparent 
+                                        bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 
+                                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Usuń</button>
                                         </div>
                                     </form>
                                         

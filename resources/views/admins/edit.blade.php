@@ -78,6 +78,50 @@
                                         bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 
                                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Save</button>
                                     </form>
+
+                                    <form action="{{ route('roles.user', $user->id) }}" 
+                                        method="POST" id="add_role_to_user">
+                                        @csrf
+                                        @method ('POST')
+                                        {{ __('Dodanie roli') }}
+                                        <br />
+                                        <div class="sm:col-span-6">
+                                            <label for="role" class="block text-sm font-medium text-gray-700">Wybierz role</label> 
+                                            <select id="role" name="role" autocomplete="role-name" class="mt-1 block w-full py-2 px-3 border bg-gray-300">
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                            @endforeach 
+                                            </select>
+                                        </div>
+
+
+                                        <button type="submit" class="mb-10 mt-5 inline-flex justify-center rounded-md border border-transparent 
+                                        bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 
+                                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Przypisz role</button>
+                                        </div>
+                                    </form>
+
+
+
+                                    <form action="{{ route('roles.remove', $user->id) }}" 
+                                        method="POST" id="remove_role_to_user">
+                                        @csrf
+                                        @method ('POST')
+                                        {{ __('Usunięcie roli') }}
+                                        <br />
+                                        <div class="sm:col-span-6">
+                                            <label for="role" class="block text-sm font-medium text-gray-700">Wybierz role</label> 
+                                            <select id="role" name="role" autocomplete="role-name" class="mt-1 block w-full py-2 px-3 border bg-gray-300">
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                            @endforeach 
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="mb-10 mt-5 inline-flex justify-center rounded-md border border-transparent 
+                                        bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 
+                                        focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Usuń role</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

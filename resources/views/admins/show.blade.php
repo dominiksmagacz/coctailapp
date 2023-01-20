@@ -25,21 +25,27 @@
                         <p>
                             Ostatnia modyfikacja: {{ $user->updated_at }}
                         </p>
+                    <br>
                     <h2>
                         Role
                     </h2>
-                    @foreach ($roles as $role)
+                    @foreach ($user->roles as $role)
+
                         <p>
                             {{ $role->name }}
                         </p>
                     @endforeach
+
+                    <br>
                     <h2>
                         Permisions
                     </h2>
-                    @foreach ($permissions as $permission)
+                    @foreach ($user->roles as $role)
+                    @foreach ($role->permissions as $permission)
                         <p>
-                            {{ $permission }}
+                            {{ $permission->name }}
                         </p>
+                    @endforeach
                     @endforeach
                         
                     </div>
