@@ -38,7 +38,7 @@
 
                     <br>
                     <h2>
-                        Permisions
+                        Uprawnienia
                     </h2>
                     @foreach ($user->roles as $role)
                     @foreach ($role->permissions as $permission)

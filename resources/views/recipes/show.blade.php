@@ -26,12 +26,12 @@
                         <br>
                         <br>
 
-                        <div class="container text-center">
+                        <div class="container text-center mb-4 mt-4">
                             <h1>
                                 Oglądnij film jak przygotować posiłek
                             </h1>
                             <iframe width="560" height="315" src="{{ $recipe->yt_link }}"
-                            title="YouTube video player" frameborder="0" 
+                            title="YouTube video player" frameborder="0" class="m-auto mt-4"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
                             gyroscope; picture-in-picture; web-share" allowfullscreen>
                             </iframe>

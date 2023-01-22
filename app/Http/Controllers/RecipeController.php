@@ -198,7 +198,7 @@ class RecipeController extends Controller
                         $query->where(function($q) {
                             $q->where('title', 'like', '%'.request('searchInput'). '%')
                             ->orWhere('description', 'like', '%'.request('searchInput'). '%')
-                            ->orWhere('ingredients', 'like', '%'.request('searchInput'). '%');
+                            ->orWhere('name', 'like', '%'.request('searchInput'). '%');
 
                     });
                 })->paginate(5);

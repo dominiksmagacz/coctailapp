@@ -18,7 +18,7 @@
                         <br>
                         <div class="flex-shrink-0">
                             <img class="h-full w-full object-cover"
-                                src="{{url('/images/'.basename($post->image_path))}}"
+                                src="{{ Storage::url(basename($post->image_path)) }}"
                                 alt="">
                         </div>
                         <br>
