@@ -25,7 +25,7 @@ class UpdatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', Rule::unique('posts', 'title')->ignore($this->post)],
+            'title' => ['required', 'max:50'],
             'content' => ['required', 'max:2048'],
             'image_path' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ];

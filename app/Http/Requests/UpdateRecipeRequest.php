@@ -24,7 +24,7 @@ class UpdateRecipeRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required', 'unique:recipes', 'max:255'],
+            'title' => ['required', 'max:255'],
             'description' => ['required', 'max:2048'],
             //'image_path' => ['required', 'mimes: jpg, png, jpeg', 'max:5048'],
             'yt_link' => ['required', 'url'],

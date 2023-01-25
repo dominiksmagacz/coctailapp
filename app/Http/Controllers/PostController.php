@@ -55,7 +55,6 @@ class PostController extends Controller
         Post::create([
             'title' => $request->title,
             'content' => $request->content,
-            // 'image_path' => $this->storeImage($request),
             'image_path' => $this->storeImageinStore($request),
             'author_id' => auth()->id()
         ]);
@@ -102,9 +101,11 @@ class PostController extends Controller
         // dd($request->file('image_path'));
         Post::where('id', $id)->update($request->except(['_token', '_method']));
 
-        Post::updated([
-            'image_path' => $this->storeImageinStore($request),
-        ]);
+        // Post::updated([
+        //     'image_path' => $this->storeImageinStore($request),
+        // ]);
+
+        Post::where('id', $id)->update(['image_path' => $this->storeImageinStore($request)]);
         // $file = request()->file('image_path');
         // $file->store(public_path('public'));
         // dd($request);
