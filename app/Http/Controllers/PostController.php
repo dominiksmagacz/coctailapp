@@ -23,7 +23,7 @@ class PostController extends Controller
         $posts2 = Post::get()->toQuery()->paginate(5);
 
 
-        return view('posts.index2', compact('posts', 'posts2'));
+        return view('posts.index', compact('posts', 'posts2'));
 
 
         // return view ('blog.index', [
