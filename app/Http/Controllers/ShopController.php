@@ -13,6 +13,7 @@ class ShopController extends Controller
      */
     public function index()
     {
+        // dd('shops');
        return view('shops.index');
     }
 

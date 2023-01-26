@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FallbackController;
 use App\Http\Controllers\Admin\RoleController;
@@ -23,6 +24,13 @@ use App\Http\Controllers\Admin\PermissionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::middleware('splade')->group(function () {
+    Route::view('/', 'welcome');
+    Route::view('/contact', 'contact');
+    // Route::get('/shops', [ShopController::class, 'index'])->name('shops.index');
+
+});
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -88,13 +96,17 @@ Route::prefix('/recipes')->group(function () {
     Route::put('/{id}', [RecipeController::class, 'update'])->middleware(['auth', 'role:moderator'])->name('recipes.update');
 });
 
-Route::get('/shops', [ShopController::class, 'index'])->name('shops.index');
+// Route::get('/shops', [ShopController::class, 'index'])->name('shops.index');
 //Route::get('/home',HomeController::class)->name('home');
 Route::get('/users/{id}/show', [UserController::class, 'show'])->name('users.show');
 
 Route::fallback(FallbackController::class, '__invoke');
 
-
+Route::prefix('/shops')->group(function () {
+Route::get('/', [ProductController::class, 'productList'])->name('shops.productList');
+Route::get('cart', [ProductController::class, 'cartList'])->name('cart.list');
+Route::post('cart', [ProductController::class, 'addToCart'])->name('cart.store');
+});
 
 
 

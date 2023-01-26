@@ -79,7 +79,7 @@
                                         </div>
                                         <br />
 
-                                        <div class="form-group">
+                                        {{-- <div class="form-group">
                                             <label class="required" for="ingredients"> cos </label>
                                         
                                             <table>
@@ -116,7 +116,7 @@
                                                 </div>
                                             @endif
                                             <span class="help-block"> ktos </span>
-                                        </div>
+                                        </div> --}}
                                         
 
                                         {{ __('Składniki') }}
