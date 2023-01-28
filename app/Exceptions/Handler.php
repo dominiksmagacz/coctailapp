@@ -2,9 +2,10 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use ProtoneMedia\Splade\SpladeCore;
+use Spatie\Permission\Exceptions\UnauthorizedException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -42,15 +43,25 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    // public function register()
-    // {
-    //     $this->reportable(function (Throwable $e) {
-    //         //
-    //     });
-    // }
-
     public function register()
     {
-        $this->renderable(SpladeCore::exceptionHandler($this));
+        $this->reportable(function (Throwable $e) {
+            //
+        });
     }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof UnauthorizedException) {
+            return response()->view("errors.index", [
+                "exception" => $e
+            ], 403);
+        }
+        return parent::render($request, $e);
+    }
+
+    // public function register()
+    // {
+    //     $this->renderable(SpladeCore::exceptionHandler($this));
+    // }
 }
