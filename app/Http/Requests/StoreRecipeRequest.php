@@ -26,8 +26,8 @@ class StoreRecipeRequest extends FormRequest
         return [
             'title' => ['required', 'unique:recipes', 'max:255'],
             'description' => ['required', 'max:2048'],
-            //'image_path' => ['required', 'mimes: jpg, png, jpeg', 'max:5048'],
             'yt_link' => ['required', 'url'],
+            'image_path' => ['required', 'mimes:jpeg,png,jpg,gif,svg,JPG', 'max:5048'],
         ];
     }
 }

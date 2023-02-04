@@ -24,12 +24,6 @@ class PostController extends Controller
 
 
         return view('posts.index', compact('posts', 'posts2'));
-
-
-        // return view ('blog.index', [
-        //     'posts' => Post::orderBy('updated_at', 'desc')->get()
-        // )];
-
     }
 
     /**

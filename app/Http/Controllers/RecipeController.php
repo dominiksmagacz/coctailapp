@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Ingredient;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UpdateRecipeRequest;
 use App\Http\Requests\StoreRecipeRequest;
 
@@ -49,7 +48,7 @@ class RecipeController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'yt_link' => $request->yt_link,
-            'image_path' => '',
+            'image_path' => $this->storeImageinStore($request),
             'author_id' => auth()->id()
     ]);
         $recipe->ingredients()->sync($request->ingredients);
@@ -85,7 +84,7 @@ class RecipeController extends Controller
         foreach($recipe->ingredients as $ingredient){
             $selectedingredients[] = $ingredient->id;
         }
-// dd($recipe);
+    // dd($recipe);
         return view('recipes.edit', compact('recipe', 'ingredients', 'selectedingredients'));
     }
 
@@ -130,6 +129,7 @@ class RecipeController extends Controller
         // Recipe::where('id', $id)->update($request->except(['_token', '_method']));
         $recipe->ingredients()->sync($request->ingredients);
 
+        Recipe::where('id', $id)->update(['image_path' => $this->storeImageinStore($request)]);
         // $recipe->ingredients()->syncWithPivotValues(
         // $id,
         //  ['cos']);
@@ -208,6 +208,12 @@ class RecipeController extends Controller
             return view('recipes.index', compact('recipes'));
             // else 
             // return view('recipes.index' , compact('recipes'))->with('No Details found. Try to search again !');
+    }
+
+    private function storeImageinStore($request){
+
+        $path = $request->file('image_path')->store('public');
+        return $path;
     }
 
 

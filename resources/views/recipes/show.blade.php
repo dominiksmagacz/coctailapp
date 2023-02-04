@@ -20,10 +20,15 @@
                         </p>
                         <br>
                         <p>
-                            {{ $recipe->author_id}}
+                            {{ $recipe->user->name}}
                         </p>
                         <br>
                         <br>
+                        <div class="flex-shrink-0">
+                            <img class="h-full w-full object-cover"
+                                src="{{ Storage::url(basename($recipe->image_path)) }}"
+                                alt="">
+                        </div>
                         <br>
 
                         <div class="container text-center mb-4 mt-4">

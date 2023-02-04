@@ -33,7 +33,8 @@ Route::middleware('splade')->group(function () {
 
 
 Route::get('/', function () {
-    return view('welcome');
+
+    return view('welcome');    //strona główna przed logowaniem
 });
 
 Route::middleware(['auth', 'role:admin'])->name('admins.')->prefix('admins')->group(function () {

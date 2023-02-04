@@ -94,6 +94,10 @@
                                             </select>
                                         </div>
                                         <br />
+                                        <div class="col-md-6 mb-5">
+                                            <input type="file" accept="image/*,.jpg" name="image_path"
+                                                class="form-control" id="image_path">
+                                        </div>
 
                                         <input type="hidden" id="recipe_id" name="recipe_id" value="{{ $recipe->id }}">
 

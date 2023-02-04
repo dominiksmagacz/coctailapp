@@ -34,7 +34,7 @@
                                         @endif
                                     </div>
                                     
-                                    <form action="{{ route('recipes.store') }}" method="POST" id="create_recipe">
+                                    <form action="{{ route('recipes.store') }}" method="POST" id="create_recipe" enctype="multipart/form-data">
                                         @csrf
                                         {{ __('Nazwa przepisu') }}
                                         <br />
@@ -133,6 +133,10 @@
                                             </select>
                                         </div>
                                         <br />
+                                        <div class="col-md-6 mb-5">
+                                            <input type="file" accept="image/*,.jpg" name="image_path"
+                                                class="form-control" id="image_path">
+                                        </div>
                                         
                                         
                                         <button type="submit" class="mb-10 inline-flex justify-center rounded-md border border-transparent 
