@@ -1,3 +1,5 @@
+
+
 <div>
     @if ($message = Session::get('success'))
         <div class="p-4 mb-3 bg-green-400 rounded">

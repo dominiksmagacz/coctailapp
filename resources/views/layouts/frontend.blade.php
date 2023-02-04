@@ -9,6 +9,8 @@
     @livewireStyles
 </head>
 <body>
+<x-app-layout>
+
     <div  class="bg-white">
         <header>
             <div class="container px-6 py-3 mx-auto">
@@ -21,9 +23,9 @@
                         </button>
                     </div>
                 </div>
-                <nav  class="p-6 mt-4 text-white bg-black sm:flex sm:justify-center sm:items-center">
+                <nav  class="p-6 mt-4 text-white bg-gray-500 sm:flex sm:justify-center sm:items-center">
                     <div class="flex flex-col sm:flex-row">
-                        <a class="mt-3 hover:underline sm:mx-3 sm:mt-0" href="/shops">Sklep</a>
+                        <a class="mt-3 hover:underline sm:mx-3 sm:mt-0 mb-3" href="/shops">Sklep</a>
                         <a href="{{ route('cart.list') }}" class="flex items-center">
                           Koszyk  
                         </a>
@@ -39,5 +41,7 @@
     
     </div>
     @livewireScripts
+</x-app-layout>
+
 </body>
 </html>

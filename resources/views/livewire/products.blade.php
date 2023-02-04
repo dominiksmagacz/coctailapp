@@ -1,4 +1,3 @@
-<x-app-layout>
     @extends('layouts.frontend')
 
     
@@ -33,5 +32,3 @@
             </div>
         </div>
     @endsection
-
-</x-app-layout>
