@@ -24,12 +24,6 @@ use App\Http\Controllers\Admin\PermissionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware('splade')->group(function () {
-    Route::view('/', 'welcome');
-    Route::view('/contact', 'contact');
-    // Route::get('/shops', [ShopController::class, 'index'])->name('shops.index');
-
-});
 
 
 Route::get('/', function () {

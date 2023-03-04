@@ -19,8 +19,8 @@ class RecipeController extends Controller
     {
         $recipes = Recipe::all()->toQuery()->paginate(10);
         $ingredients = Ingredient::all();
-        
-        return view('recipes.index', compact('recipes','ingredients'));
+
+        return view('recipes.index', compact('recipes', 'ingredients'));
     }
 
     /**
@@ -43,14 +43,14 @@ class RecipeController extends Controller
     public function store(StoreRecipeRequest $request)
     {
         // dd($request);
-        
+
         $recipe = Recipe::create([
             'title' => $request->title,
             'description' => $request->description,
             'yt_link' => $request->yt_link,
             'image_path' => $this->storeImageinStore($request),
             'author_id' => auth()->id()
-    ]);
+        ]);
         $recipe->ingredients()->sync($request->ingredients);
 
         return redirect()->route('recipes.index')->with('message', 'Przepis został dodany.');;
@@ -81,24 +81,24 @@ class RecipeController extends Controller
         $ingredients = Ingredient::orderBy('name', 'ASC')->get();
 
         $selectedingredients = [];
-        foreach($recipe->ingredients as $ingredient){
+        foreach ($recipe->ingredients as $ingredient) {
             $selectedingredients[] = $ingredient->id;
         }
-    // dd($recipe);
+        // dd($recipe);
         return view('recipes.edit', compact('recipe', 'ingredients', 'selectedingredients'));
     }
 
     // public function edit(Recipe $recipe)
     // {
     //     abort_if(Gate::denies('recipe_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-    
+
     //     $recipe->load('ingredients');
-    
+
     //     $ingredients = Ingredient::get()->map(function($ingredient) use ($recipe) {
     //         $ingredient->value = data_get($recipe->ingredients->firstWhere('id', $ingredient->id), 'pivot.amount') ?? null;
     //         return $ingredient;
     //     });
-    
+
     //     return view('admin.recipes.edit', [
     //         'ingredients' => $ingredients,
     //         'recipe' => $recipe,
@@ -122,7 +122,7 @@ class RecipeController extends Controller
         // dd($id);
 
         $recipe = Recipe::findOrFail($id);
-        
+
 
         $recipe->update($request->all());
         // $recipe->update($request->except(['_token', '_method']));
@@ -158,59 +158,20 @@ class RecipeController extends Controller
     public function search(Request $request)
     {
 
-        $search = $request->input('searchInput');
-        // $recipes = Recipe::with('ingredients')
-        //     ->when(request('searchInput'), function ($query) {
-        //         $query->where(function($q) {
-        //             $q->where('title', 'ilike', '%'.request('searchInput'). '%')
-        //             ->orWhere('description', 'ilike', '%'.request('searchInput'). '%')
-        //             ->orWhere('ingredients', 'ilike', '%'.request('searchInput'). '%');
-        //         });
-        //     })->paginate(15);
-        //     // dd($recipes);
+        $data = request('searchInput');
+        $recipes = Recipe::with('ingredients')
+            ->where('title', 'like', '%' . $data . '%')
+            ->orWhere('description', 'like', '%' . $data . '%')
+            ->orWhereHas('ingredients', function ($query) use ($data) {
+                $query->where('name', 'like', '%' . $data . '%');
+            })
+            ->paginate(5);
 
-
-        //         $recipes = Recipe::whereHas('ingredients', function ($query) use ($search){
-        //             $query->where('title', 'like', '%'.$search.'%');
-        //         })
-        //         ->with(['ingredients' => function($query) use ($search){
-        //             $query->where('description', 'like', '%'.$search.'%');
-        //         }])->get();
-
-                // $recipes = Recipe::join( 'ingredients', 'ingredients.id', '=', 'id' )
-                // ->where( 'title', 'LIKE', '%'.$search.'%' )
-                // ->orWhere( 'name', $search )
-                // ->orWhere( 'description', $search )
-                // ->paginate( 15 );
-
-                // $recipes = DB::table('ingredients')
-                // ->join('ingredient_recipe', 'ingredients.id', '=', 'ingredient_recipe.ingredient_id')
-                // ->join('recipes', 'ingredient_recipe.recipe_id', '=', 'recipes.id')
-                // ->select('recipes.title', 'recipes.description', 'ingredients.name')
-                // ->where('recipes.title', 'like', '%' . $search . '%')
-                // ->orWhere('recipes.description', 'like', '%' . $search . '%')
-                // ->orWhere('ingredients.name', 'like', '%' . $search . '%')
-                // ->get();
-
-               
-                $recipes = Recipe::with('ingredients')    
-                    ->when($search, function ($query) {
-                        $query->where(function($q) {
-                            $q->where('title', 'like', '%'.request('searchInput'). '%')
-                            ->orWhere('description', 'like', '%'.request('searchInput'). '%');
-                            // ->orWhere('name', 'like', '%'.request('searchInput'). '%');
-
-                    });
-                })->paginate(5);
-
-
-        // if ($recipes->total() > 0)
-            return view('recipes.index', compact('recipes'));
-            // else 
-            // return view('recipes.index' , compact('recipes'))->with('No Details found. Try to search again !');
+        return view('recipes.index', compact('recipes'));
     }
 
-    private function storeImageinStore($request){
+    private function storeImageinStore($request)
+    {
 
         $path = $request->file('image_path')->store('public');
         return $path;
