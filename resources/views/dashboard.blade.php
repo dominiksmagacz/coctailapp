@@ -12,6 +12,7 @@
                     {{ __("Zalogowałeś się!") }}
                 </div>
             </div>
+            Na naszej stronie zapytaj AI
         </div>
     </div>
 </x-app-layout>

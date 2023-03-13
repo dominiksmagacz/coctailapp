@@ -14,6 +14,10 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PermissionController;
 
+
+use App\Http\Controllers\GPT3Controller;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +28,7 @@ use App\Http\Controllers\Admin\PermissionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 
 Route::get('/', function () {
@@ -98,9 +103,9 @@ Route::get('/users/{id}/show', [UserController::class, 'show'])->name('users.sho
 Route::fallback(FallbackController::class, '__invoke');
 
 Route::prefix('/shops')->group(function () {
-Route::get('/', [ProductController::class, 'productList'])->name('shops.productList');
-Route::get('cart', [ProductController::class, 'cartList'])->name('cart.list');
-Route::post('cart', [ProductController::class, 'addToCart'])->name('cart.store');
+    Route::get('/', [ProductController::class, 'productList'])->name('shops.productList');
+    Route::get('cart', [ProductController::class, 'cartList'])->name('cart.list');
+    Route::post('cart', [ProductController::class, 'addToCart'])->name('cart.store');
 });
 
 
@@ -114,5 +119,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+//AND ADD THIS LINE !
+Route::get("/gpt3", [GPT3Controller::class, "index"])->name("gpt3Route");
+
 
 require __DIR__ . '/auth.php';
