@@ -21,7 +21,7 @@ class GPT3Controller extends Controller
     ];
 
     //Put your OpenAI API Token !
-    private $token = "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";
+    private $token = "TOKEN";
 
     public function index(Request $request){
 
