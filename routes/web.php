@@ -109,9 +109,8 @@ Route::prefix('/shops')->group(function () {
 });
 
 
-
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard', ['result' => null]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -121,7 +120,7 @@ Route::middleware('auth')->group(function () {
 });
 
 //AND ADD THIS LINE !
-Route::get("/gpt3", [GPT3Controller::class, "index"])->name("gpt3Route");
+Route::get("/gpt3", [GPT3Controller::class, "index"])->name("gpt3Route")->name('gpt3');
 
 
 require __DIR__ . '/auth.php';

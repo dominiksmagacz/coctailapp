@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 //add this line, we will use Laravel HTTP to call OpenAI API !
 use Illuminate\Support\Facades\Http;
@@ -20,12 +21,14 @@ class GPT3Controller extends Controller
     ];
 
     //Put your OpenAI API Token !
-    private $token = "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";
+    private $token = "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";
 
-    public function index(){
+    public function index(Request $request){
+
 
       //prompt or you can say user input
-      $prompt = "What is Laravel";
+      $prompt = $request->chatQuerry;
+      
 
       //choose model !
       //Davinci is the most powerful engine
@@ -53,12 +56,18 @@ class GPT3Controller extends Controller
      //After checking print result !
 
       if($response->failed()){
-            return "Request Failed !";
+        $result = null;
+            // return "Request Failed !";
+        return view('dashboard', compact('result'));
+
       }
       else{
 
           //OpenAI API result
-          return $response['choices'][0]['text'];
+          $result = $response['choices'][0]['text'];
+        //   dd($result);  //-- Tutaj zmienna result zwraca prawidłowo odpowiedź z ChatGPT
+        //   return $response['choices'][0]['text'];
+        return view('dashboard', compact('result'));
       }
     
    }

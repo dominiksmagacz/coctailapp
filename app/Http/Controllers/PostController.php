@@ -54,7 +54,7 @@ class PostController extends Controller
         ]);
         
     
-        return redirect()->route('posts.index')->with('message', 'Przepis został dodany.');;
+        return redirect()->route('posts.index')->with('message', 'Przepis został dodany.');
     }
 
     /**
