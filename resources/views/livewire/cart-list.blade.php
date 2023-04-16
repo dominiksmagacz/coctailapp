@@ -62,6 +62,9 @@
         </div>
         <div class="mt-5">
             <a href="#" class="px-6 py-2 text-red-800 bg-red-300" wire:click.prevent="clearAllCart">Wyczyść koszyk</a>
+
+            <a href="#" class="px-6 py-2 text-blue-800 bg-blue-300 float-right">Dokonaj zakupu</a>
+
         </div>
 
       </div>
