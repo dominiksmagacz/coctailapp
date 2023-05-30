@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
@@ -24,9 +25,8 @@ class ShopController extends Controller
      */
     public function create()
     {
-        //
+        return view('livewire.create');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -35,7 +35,16 @@ class ShopController extends Controller
      */
     public function store(Request $request)
     {
-        //
+               // dd($request);
+               Product::create([
+                'name' => $request->name,
+                'price' => $request->price,
+                'description' => $request->description,
+                'image' => $this->storeImageinStore($request)
+            ]);
+            
+        
+            return redirect()->route('shops.productList')->with('message', 'Produkt został dodany.');
     }
 
     /**
@@ -46,7 +55,7 @@ class ShopController extends Controller
      */
     public function show($id)
     {
-        //
+        dd('ttt');
     }
 
     /**
@@ -57,7 +66,8 @@ class ShopController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('livewire.edit');
+        
     }
 
     /**
@@ -80,6 +90,14 @@ class ShopController extends Controller
      */
     public function destroy($id)
     {
-        //
+        dd('desgtroy');
+        Product::destroy($id);
+        return redirect(route('shops.productList'))->with('message', 'Artykuł został usunięty.');
+    }
+
+    private function storeImageinStore($request){
+        $path = $request->file('image_path')->store('public');
+ 
+        return $path;
     }
 }

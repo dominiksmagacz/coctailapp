@@ -40,7 +40,7 @@
                                     </div>
                                    
                                 </div>
-                                <div class="overflow-hidden shadow ring-1 mb-5 ring-black ring-opacity-5 md:rounded-lg">
+                                <div class="overflow-hidden shadow ring-1 mb-5 ring-black ring-opacity-5 md:rounded-lg ">
                                     <div class="mt-5 mb-9 ml-5 float-left">
                                        @if ($result == null)
                                        Brak odpowiedzi z ChatGPT

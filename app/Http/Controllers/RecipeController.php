@@ -129,6 +129,7 @@ class RecipeController extends Controller
         // Recipe::where('id', $id)->update($request->except(['_token', '_method']));
         $recipe->ingredients()->sync($request->ingredients);
 
+        if(count($request->files) > 0)
         Recipe::where('id', $id)->update(['image_path' => $this->storeImageinStore($request)]);
         // $recipe->ingredients()->syncWithPivotValues(
         // $id,

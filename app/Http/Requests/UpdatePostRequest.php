@@ -27,7 +27,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => ['required', 'max:50'],
             'content' => ['required', 'max:2048'],
-            'image_path' => ['required', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'image_path' => ['mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ];
     }
 }

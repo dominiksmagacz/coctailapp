@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -11,7 +12,10 @@ class ProductController extends Controller
     {
         $products = Product::all();
 
-        return view('livewire.products', compact('products'));
+        if(Auth::user() != null)
+            return view('livewire.products', compact('products'));
+        else
+            return redirect()->route('dashboard');
     }
 
     public function cartList()
@@ -34,4 +38,5 @@ class ProductController extends Controller
 
         return redirect()->route('cart.list');
     }
+    
 }

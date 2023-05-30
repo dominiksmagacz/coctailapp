@@ -106,6 +106,10 @@ Route::prefix('/shops')->group(function () {
     Route::get('/', [ProductController::class, 'productList'])->name('shops.productList');
     Route::get('cart', [ProductController::class, 'cartList'])->name('cart.list');
     Route::post('cart', [ProductController::class, 'addToCart'])->name('cart.store');
+    Route::get('/create', [ShopController::class, 'create'])->name('shops.create');
+    Route::post('/store', [ShopController::class, 'store'])->name('shops.store');
+    Route::get('/edit/{id}', [ShopController::class, 'edit'])->name('shops.edit');
+    Route::delete('/{id}', [ShopController::class, 'destroy'])->name('shops.destroy');
 });
 
 
@@ -117,6 +121,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
 });
 
 //AND ADD THIS LINE !

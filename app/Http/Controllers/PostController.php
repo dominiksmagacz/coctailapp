@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
 
 use function PHPUnit\Framework\isEmpty;
+use App\Http\Requests\UpdatePostRequest;
 
 class PostController extends Controller
 {
@@ -22,8 +23,9 @@ class PostController extends Controller
 
         $posts2 = Post::get()->toQuery()->paginate(5);
 
-
-        return view('posts.index', compact('posts', 'posts2'));
+        
+            return view('posts.index', compact('posts', 'posts2'));
+        
     }
 
     /**
@@ -92,14 +94,15 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, $id)
     {
-        // dd($request->file('image_path'));
+        // dd(count($request->files));
         Post::where('id', $id)->update($request->except(['_token', '_method']));
 
         // Post::updated([
         //     'image_path' => $this->storeImageinStore($request),
         // ]);
-
-        Post::where('id', $id)->update(['image_path' => $this->storeImageinStore($request)]);
+        if(count($request->files) > 0)
+            Post::where('id', $id)->update(['image_path' => $this->storeImageinStore($request)]);
+            
         // $file = request()->file('image_path');
         // $file->store(public_path('public'));
         // dd($request);
